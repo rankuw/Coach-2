@@ -1,11 +1,11 @@
 import { Schema } from "mongoose";
-import { STATUS, SUBSCRIPTION } from "../../constants/enum.constants";
+import { STATUS, SUBSCRIPTIONTYPE } from "../../constants/enum.constants";
 import { paymentHistoryInterface } from "../../interface/common.interface";
 
 const paymentSubscriptionSchema = new Schema<paymentHistoryInterface>({
     level: {
         type: String,
-        enum: SUBSCRIPTION,
+        enum: SUBSCRIPTIONTYPE,
         required: true
     },
     amount: {

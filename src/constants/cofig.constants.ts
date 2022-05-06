@@ -1,6 +1,6 @@
 
-import dotenv from "dotenv/config";
-dotenv;
+import dotenv from "dotenv";
+dotenv.config({ path: process.cwd() + `/environments/.env.${process.env.NODE_ENV}` });
 
 export const {
     PORT = 5000,

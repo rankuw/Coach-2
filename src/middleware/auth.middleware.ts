@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express"
 import * as jwt from "jsonwebtoken";
 import { STATUS_MSG } from "../constants/app.constants";
 import { JWT_SECRET } from "../constants";
-import SessionEntity from "../entities/v1/session.entity";
+import {SessionEntity} from "../entities/";
 import Logger from "../logger";
 import { errorHandler } from "../utils";
 const logger = Logger("auth-middleware");

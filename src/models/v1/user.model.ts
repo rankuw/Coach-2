@@ -1,4 +1,4 @@
-import { athleteInterface, paymentHistoryInterface, subscriptionInterface, userInterface} from "../../interface";
+import { userInterface} from "../../interface";
 import {Schema, model, Types, Model} from "mongoose"
 import { SALT_ROUNDS } from "../../constants/index";
 import  {passwordHash}  from "../../utils/index";

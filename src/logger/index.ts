@@ -4,7 +4,7 @@ import {buildProdLogger} from "./prod.logger";
 
 
 export default function Logger(place: string){
-    if(NODE_ENV === "dev"){
+    if(NODE_ENV === "local"){
         return buildDevLogger(place);
      }
      else{

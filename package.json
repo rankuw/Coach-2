@@ -5,8 +5,10 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=dev HOST=localhost PORT=3000 nodemon ./src/index.ts",
-    "start": "NODE_ENV=prod HOST= 44.202.78.173 PORT=5006 node ./dist/index.js",
+    "local": "NODE_ENV=local HOST=localhost nodemon ./src/index.ts",
+    "dev": "tsc && NODE_ENV=dev HOST=coachdevapi.appskeeper.in  node ./dist/index.js",
+    "qa": "tsc && NODE_ENV=qa HOST=coachqaapi.appskeeper.in node ./dist/index.js",
+    "stage": "tsc && NODE_ENV=stage HOST=coachstgapi.appskeeper.in node ./dist/index.js",
     "build": "tsc",
     "prebuild": "rm -rf dist"
   },
