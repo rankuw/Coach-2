@@ -1,14 +1,22 @@
-import { workout } from "../../interface";
+import { workoutInterface } from "../../interface";
 import {Schema, model} from "mongoose";
 import { BODY_PART, DIFFICULTY } from "../../constants/enum.constants";
 
-const workoutSchema: Schema<workout> = new Schema<workout>({
+const workoutSchema: Schema<workoutInterface> = new Schema<workoutInterface>({
+    coach: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+    },
+    photoURL: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true,
         unique: true
     },
-    difficultLvl: {
+    difficulty: {
         type: String,
         enum: DIFFICULTY,
         required: true
@@ -20,9 +28,13 @@ const workoutSchema: Schema<workout> = new Schema<workout>({
         type: Number,
         required: true
     },
-    focusBodyPart: {
-        type: String,
-        enum: BODY_PART
+    calories: {
+        type: Number,
+        required: true
+    },
+    time: {
+        type: Number,
+        required: true
     }
 })
 
