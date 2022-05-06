@@ -1,8 +1,8 @@
 export enum DIFFICULTY{
-    BEGINNER = "beginner",
-    INTERMEDIATE = "intermediate",
-    ADVANCE = "advance",
-    NOVICE = "novice"
+    BEGINNER = "Beginner",
+    INTERMEDIATE = "Intermediate",
+    ADVANCE = "Advance",
+    NOVICE = "Novice"
 }
 
 // export const DIFFICULTYY = {
@@ -31,4 +31,9 @@ export enum STATUS{
 export enum USERTYPE{
     COACH,
     ATHLETE
+}
+
+export enum WORKOUT{
+    ONGOING,
+    FINISHED
 }

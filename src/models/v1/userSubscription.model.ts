@@ -1,6 +1,6 @@
 import {model, Schema, Model, models} from "mongoose";
 import { USERTYPE } from "../../constants";
-import {userSubscriptionInterface} from "../../interface/userSubscription.interface";
+import {userSubscriptionInterface} from "../../interface";
 
 const userSubscriptionSchema: Schema<userSubscriptionInterface> = new Schema<userSubscriptionInterface>({
     userId: {

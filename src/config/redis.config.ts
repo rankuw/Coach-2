@@ -1,6 +1,6 @@
 import { createClient } from "redis";
 import { STATUS_MSG } from "../constants";
-import {ISession} from "../interface/session.interface"
+import {ISession} from "../interface/"
 import * as util from "util";
 import Logger from "../logger/";
 import { errorHandler } from "../utils";

@@ -24,7 +24,7 @@ app.use("/api-docs", serve, setup(swaggerFunction())) //path for swagger api doc
 // app.use("/api/coach/v1", coachRouter); // coach route
 app.use("/api/user/v1", userRoute);
 app.use("/api/admin/v1", adminRoute);
-app.use("/api/subscription/v1", subscriptionRoute)
+app.use("/api/user/subscription/v1", subscriptionRoute)
 
 
 app.all('*', (req, res, next) => { //to check if a user goes to a undocumented path.

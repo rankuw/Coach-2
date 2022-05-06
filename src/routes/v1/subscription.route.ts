@@ -55,7 +55,7 @@ const subscriptionRoute = Route();
 
 /**
  * @swagger
- * /api/subscription/v1/subscriptionPlans:
+ * /api/user/subscription/v1/subscriptionPlans:
  *   get:
  *      summary: Get subscription plans.
  *      tags: [Subscription]
@@ -88,7 +88,7 @@ const subscriptionRoute = Route();
 
 /**
  * @swagger
- * /api/subscription/v1/subscriptionPlan/select/{subscriptionId}:
+ * /api/user/subscription/v1/subscriptionPlan/select/{subscriptionId}:
  *   post:
  *      summary: Get subscription plans.
  *      tags: [Subscription]
@@ -124,7 +124,7 @@ const subscriptionRoute = Route();
 
  /**
  * @swagger
- * /api/subscription/v1/subscriptionDetail:
+ * /api/user/subscription/v1/subscriptionDetail:
  *   get:
  *      summary: Get users subscription plan.
  *      tags: [Subscription]

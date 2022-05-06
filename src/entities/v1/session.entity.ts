@@ -1,6 +1,6 @@
 import SessionModel from "../../models/v1/session.model";
 import { USERTYPE } from "../../constants";
-import { sessionInterface } from "../../interface/session.interface";
+import { sessionInterface } from "../../interface";
 import { redis } from "../../config/redis.config";
 import Logger from "../../logger";
 

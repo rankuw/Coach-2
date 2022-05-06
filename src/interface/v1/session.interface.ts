@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { USERTYPE } from "../constants";
+import { USERTYPE } from "../../constants";
 
 export interface sessionInterface {
   id: string,
@@ -23,6 +23,4 @@ export namespace ISession {
   export interface tokenDetails {
     deviceId: Types.ObjectId;
     sessionId: Types.ObjectId;
-
-
   }}

@@ -1,10 +1,14 @@
-import {model, Schema, Model} from "mongoose";
+import { Schema, model, Model } from "mongoose";
 import { DIFFICULTY } from "../../constants";
-import {exerciseInterface} from "../../interface/exercise.interface";
+import { exerciseInterface } from "../../interface";
 
 const exerciseSchema: Schema<exerciseInterface> = new Schema<exerciseInterface>({
-    name: {
+    title: {
         type: String,
+        required: true
+    },
+    difficulty: {
+        enum: DIFFICULTY,
         required: true
     },
     photoURL: {
@@ -14,13 +18,8 @@ const exerciseSchema: Schema<exerciseInterface> = new Schema<exerciseInterface>(
     videoURL: {
         type: String,
         required: true
-    },
-    level: {
-        enum: DIFFICULTY,
-        required: true
     }
 });
 
-const ExerciseModel: Model<exerciseInterface> = model('exercise', exerciseSchema);
+const ExerciseModel: Model<exerciseInterface> = model("exercise", exerciseSchema);
 export default ExerciseModel;
-

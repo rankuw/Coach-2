@@ -1,4 +1,4 @@
-import { loginInterface, statusInterface, userInterface } from "../../interface/common.interface";
+import { loginInterface, statusInterface, userInterface } from "../../interface";
 import UserModel from "../../models/v1/user.model";
 import {STATUS_MSG} from "../../constants/app.constants"
 import {HydratedDocument, Types} from  "mongoose";

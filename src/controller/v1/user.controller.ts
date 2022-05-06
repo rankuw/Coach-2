@@ -1,7 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {sendOTP, verifyOTP, errorHandler, createToken, sendEmail, extractToken, passwordCompare} from "../../utils/index"
-import { loginInterface} from "../../interface/common.interface";
-import { userInterface } from "../../interface/common.interface";
+import { loginInterface, userInterface} from "../../interface/";
 import Logger from "../../logger";
 import {UserEntity, SessionEntity }from "../../entities/"
 import { HOST, PORT, STATUS_MSG } from "../../constants";

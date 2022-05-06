@@ -1,6 +1,6 @@
 import { Schema, model, Model } from "mongoose";
 import { USERTYPE } from "../../constants";
-import { sessionInterface } from "../../interface/session.interface";
+import { sessionInterface } from "../../interface/v1/session.interface";
 
 const sessionSchema: Schema<sessionInterface> = new Schema<sessionInterface>({
     isActive: {

@@ -1,9 +1,7 @@
 import {SubscriptionEntity, userSubscriptionEntity} from "../../entities/";
-import userSubscriptionModel from "../../models/v1/userSubscription.model";
 import {Request, Response} from "express";
 import { STATUS_MSG } from "../../constants";
 import { errorHandler } from "../../utils";
-import { subscriptionInterface, subscriptionCostInterface } from "../../interface";
 import Logger from "../../logger";
 
 const logger = Logger("subscription-controller");

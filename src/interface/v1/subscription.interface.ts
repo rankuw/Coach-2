@@ -1,4 +1,4 @@
-import { DIFFICULTY, SUBSCRIPTIONTYPE } from "../constants";
+import { DIFFICULTY, SUBSCRIPTIONTYPE } from "../../constants";
 import {Types} from "mongoose";
 
 export interface subscriptionInterface{

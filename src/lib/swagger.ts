@@ -1,5 +1,4 @@
 import swaggerJsDoc from "swagger-jsdoc";
-import { PORT } from "../constants";
 
 export const swaggerFunction = () => {
     const options = {
