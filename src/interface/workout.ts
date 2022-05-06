@@ -1,18 +1,14 @@
 import { BODY_PART, DIFFICULTY} from "../constants/enum.constants";
 import {Types} from "mongoose"
 
-export interface workout{
-    title: String,
-    difficultLvl: DIFFICULTY,
+export interface workoutInterface{
+    coach: Types.ObjectId,
+    photoURL: string,
+    title: string,
+    difficulty: DIFFICULTY,
     description: string,
-    duration: Number,
-    focusBodyPart: BODY_PART,
+    duration: number,
+    calories: number,
+    time: number,
     
-}
-
-export interface workoutCategory{
-    title: String,
-    photo: URL,
-    workouts: [Types.ObjectId],
-    status: Boolean //will get true if user completes exercise.
-}
+} 
