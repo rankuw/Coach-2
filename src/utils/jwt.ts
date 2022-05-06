@@ -16,8 +16,7 @@ export async function extractToken(token: string): Promise<any>{
         return payLoad
     }catch(err){
         logger.error(JSON.stringify(err));
-        
-        throw STATUS_MSG.ERROR.INVALID_TOKEN;
+        return Promise.reject(STATUS_MSG.ERROR.INVALID_TOKEN);
     }
 
 }

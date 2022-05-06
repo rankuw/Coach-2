@@ -6,7 +6,7 @@ import upload from "../../middleware/multer.middleware";
 import session from "../../middleware/session.middleware";
 import {USERTYPE} from "../../constants"
 
-const userRouter = Router();
+const userRoute = Router();
 /**
  * @swagger
  * components:
@@ -178,7 +178,7 @@ const userRouter = Router();
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
- userRouter.post("/signup",
+ userRoute.post("/signup",
     validator.validateUser,
     SignupController.signUp
 )
@@ -228,7 +228,7 @@ const userRouter = Router();
  *                $ref: '#/components/schemas/Result'
  *        
  */
- userRouter.get("/signup/email/verify", 
+ userRoute.get("/signup/email/verify", 
     validator.validateToken,
     UserController.verifyEmail
  );
@@ -283,7 +283,7 @@ const userRouter = Router();
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-userRouter.post("/signup/phone", 
+userRoute.post("/signup/phone", 
     validator.validatePhone,
     SignupController.signUpPhone
 );
@@ -342,7 +342,7 @@ userRouter.post("/signup/phone",
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-userRouter.post("/signup/phone/verify",
+userRoute.post("/signup/phone/verify",
     validator.validatePhoneDevice,
     UserController.verifyPhone
 );
@@ -392,7 +392,7 @@ userRouter.post("/signup/phone/verify",
  *        400:
  *           description: Missing fields 
  */
-userRouter.post("/signup/phone/resendotp",
+userRoute.post("/signup/phone/resendotp",
     validator.validatePhone,
     UserController.resendOtp
 )
@@ -445,7 +445,7 @@ userRouter.post("/signup/phone/resendotp",
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-userRouter.post("/forgotPassword/phone",
+userRoute.post("/forgotPassword/phone",
     validator.validatePhone,
     UserController.forgotPasswordPhone
     )
@@ -504,7 +504,7 @@ userRouter.post("/forgotPassword/phone",
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-userRouter.post("/forgotPassword/phone/verify",
+userRoute.post("/forgotPassword/phone/verify",
     validator.validatePhoneOtp,
     UserController.newPasswordOTPValidator
 )
@@ -558,7 +558,7 @@ userRouter.post("/forgotPassword/phone/verify",
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-userRouter.post("/forgotPassword/email",
+userRoute.post("/forgotPassword/email",
     validator.validateEmail,
     validator.validateEmailPassword,
     UserController.newPasswordEmail
@@ -620,7 +620,7 @@ userRouter.post("/forgotPassword/email",
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-userRouter.post("/updatePassword",
+userRoute.post("/updatePassword",
     validator.updatePassword,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.newPassword
@@ -679,7 +679,7 @@ userRouter.post("/updatePassword",
  *          description: Invalid credentials
  *          
  */
- userRouter.post("/login", 
+ userRoute.post("/login", 
     validator.login,
     UserController.login
 );
@@ -714,7 +714,7 @@ userRouter.post("/updatePassword",
  *          description: Missing fields
  *          
  */
-userRouter.get("/profile",
+userRoute.get("/profile",
     validator.validateSession,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.getUserDetails 
@@ -757,7 +757,7 @@ userRouter.get("/profile",
  *          description: Unauthorized
  *          
  */
-userRouter.patch("/setDOB",
+userRoute.patch("/setDOB",
     validator.validateDOB,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.newDOB
@@ -805,10 +805,10 @@ userRouter.patch("/setDOB",
  *          description: Unauthorized
  *          
  */
-userRouter.patch("/uploadPicture", 
+userRoute.patch("/uploadPicture", 
     validator.validateSession,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.image
 )
 
-export default userRouter ;
+export default userRoute ;

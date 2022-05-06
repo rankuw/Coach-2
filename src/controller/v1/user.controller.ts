@@ -1,14 +1,11 @@
 import {NextFunction, Request, Response} from "express";
-import {sendOTP, verifyOTP, errorHandler, createToken, sendEmail, extractToken} from "../../utils/index"
+import {sendOTP, verifyOTP, errorHandler, createToken, sendEmail, extractToken, passwordCompare} from "../../utils/index"
 import { loginInterface} from "../../interface/common.interface";
-import { STATUS_MSG } from "../../constants/app.constants";
 import { userInterface } from "../../interface/common.interface";
 import Logger from "../../logger";
-import UserEntity from "../../entities/v1/user.entity"
-import SessionEntity from "../../entities/v1/session.entity";
-import { HOST, PORT } from "../../constants";
+import {UserEntity, SessionEntity }from "../../entities/"
+import { HOST, PORT, STATUS_MSG } from "../../constants";
 import upload from "../../middleware/multer.middleware";
-import { passwordCompare } from "../../utils/passwordhash";
 
 const logger = Logger("user-controller");
 export default class UserController{
@@ -355,13 +352,11 @@ export default class UserController{
                 }catch(err: any){
                     logger.error(err);
                     errorHandler(err, res);
-                }
-                
+                }  
             })
-            
-            
-            
         }
+
+        
 }
 
 

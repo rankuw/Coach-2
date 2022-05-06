@@ -167,22 +167,22 @@ export const STATUS_MSG = {
                 statusCode: 201,
                 success: true,
                 message: `${title} successfully`,
-                type: {}
+                data: {}
             }
         },
-        FETCH_SUCCESS: (msg: string) => {
+        FETCH_SUCCESS: (data?: any, msg?: string) => {
             return {
                 statusCode: 200,
                 success: true,
-                message: msg,
-                type: {}
+                message: msg || "data fetched",
+                data: data || {} 
             }
         },
         VALID_TOKEN: {
             statusCode: 401,
             success: false,
             message: 'Valid token provided',
-            type: {}
+            data: {}
         },
         OTP_SENT: (phoneNumber: string) => {
             return {

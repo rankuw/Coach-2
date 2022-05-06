@@ -6,7 +6,7 @@ import Logger from "../../logger";
 import { passwordHash } from "../../utils";
 
 const logger = Logger("user-entity");
-export default class UserEntity{
+export class UserEntity{
 
     static getModel(){
         return UserModel;

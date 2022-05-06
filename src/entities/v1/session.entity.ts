@@ -1,12 +1,11 @@
 import SessionModel from "../../models/v1/session.model";
-import { statusInterface } from "../../interface/common.interface";
-import { STATUS_MSG, USERTYPE } from "../../constants";
+import { USERTYPE } from "../../constants";
 import { sessionInterface } from "../../interface/session.interface";
 import { redis } from "../../config/redis.config";
 import Logger from "../../logger";
 
 const logger = Logger("session-entity");
-export default class SessionEntity{
+export class SessionEntity{
     static getModel(){
         return SessionModel;
     }
