@@ -8,6 +8,7 @@ const exerciseSchema: Schema<exerciseInterface> = new Schema<exerciseInterface>(
         required: true
     },
     difficulty: {
+        type: String,
         enum: DIFFICULTY,
         required: true
     },

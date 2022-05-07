@@ -3,9 +3,10 @@ import SubscriptionModel from "../../models/v1/subscription.model";
 import subscriptionCostModel from "../../models/v1/subscriptionCost.model";
 import { subscriptionCostInterface, subscriptionInterface } from "../../interface";
 import { STATUS_MSG } from "../../constants";
+import Base from "../base";
 const logger = Logger("admin-entity");
 
-export class SubscriptionEntity{
+export class SubscriptionEntity extends Base{
 
     static async addSubscription(payload: subscriptionInterface): Promise<subscriptionInterface>{
         try{    

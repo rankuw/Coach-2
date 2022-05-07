@@ -1,10 +1,12 @@
 import userSubscriptionModel from "../../models/v1/userSubscription.model"
 import Base from "../base"
 class UserSubscriptionEntity extends Base{
+    
     constructor(){
         super(userSubscriptionModel);
     }
-    getValue =async (payload: any) => {
+
+    getSubscriptionDetails =async (payload: any) => {
         try{
             
             const doc = await this.getModel().findOne(payload);

@@ -20,7 +20,6 @@ export default class SubscriptionController{
         }
     }
 
-    // ! add this to subscreption route
     // @desc Add subscreption plans
     // @route POST /api/subscription/v1/subscriptionPlans/add
     // @access Private
@@ -66,7 +65,7 @@ export default class SubscriptionController{
     static async getDetails(req: Request, res: Response){
         try{
             const userId = <string>req.user;
-            const detail = await userSubscriptionEntity.getValue({userId});
+            const detail = await userSubscriptionEntity.getSubscriptionDetails({userId});
             res.send(detail);
         }catch(err: any){
             logger.error(err);

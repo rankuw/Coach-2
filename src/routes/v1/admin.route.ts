@@ -1,10 +1,9 @@
 import {Router} from "express";
 import AdminController from "../../controller/v1/admin.controller";
+import ExerciseController from "../../controller/v1/exercise.controller";
 import SubscriptionController from "../../controller/v1/subscription.controller";
 const adminRoute = Router();
 
-// ! send these routes to subscription routes.
-// ! add an admin user type to protect these routes for admin
 /**
  * @swagger
  * components:
@@ -49,7 +48,7 @@ const adminRoute = Router();
  * @swagger
  * tags:
  *   - name: Admin
- *     description: Admin Routes to add subscription details.
+ *     description: Admin Routes to add details.
  */
 
 /**
@@ -104,6 +103,29 @@ adminRoute.post("/subscriptionPlan",
 adminRoute.post("/subscriptionCost/add",
     AdminController.addSubscriptionCost
 );
+
+/**
+ * @swagger
+ * /api/admin/v1/exercise/add:
+ *   post:
+ *      summary: Enter DOB of user.
+ *      tags: [Admin]
+ *                
+ *      responses:
+ *        201:
+ *          description:Added exercise
+ *             
+ *        500:
+ *          description: Some server error
+ *          
+ * 
+ *        401:
+ *          description: Unauthorized
+ *          
+ */
+ adminRoute.post("/exercise/add",
+    ExerciseController.addExercise
+ );
 
 export default adminRoute;
 
