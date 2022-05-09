@@ -1,6 +1,6 @@
 import { Schema, model, Model } from "mongoose";
 import { WORKOUT } from "../../constants";
-import { userWorkout } from "../../interface/v1/userWorkout.interface";
+import { userWorkout } from "../../interface";
 
 const userWorkoutSchema: Schema<userWorkout> = new Schema<userWorkout>({
     user: {
