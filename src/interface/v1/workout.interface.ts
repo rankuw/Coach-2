@@ -9,7 +9,7 @@ export interface workoutInterface{
     description: string,
     duration: number,
     calories: number,
-    time: number
+    time: string
 } 
 
 export interface workoutExerciseInterface{

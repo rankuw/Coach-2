@@ -6,7 +6,7 @@ import { STATUS_MSG } from "../../constants";
 import Base from "../base";
 const logger = Logger("admin-entity");
 
-export class SubscriptionEntity extends Base{
+export class SubscriptionEntity{
 
     static async addSubscription(payload: subscriptionInterface): Promise<subscriptionInterface>{
         try{    
@@ -18,7 +18,7 @@ export class SubscriptionEntity extends Base{
         }
     }
 
-    static async addSubsriptionCost(payload: subscriptionCostInterface){
+    static async addSubsriptionCost(payload: subscriptionCostInterface): Promise<subscriptionCostInterface>{
         try{
             const subscriptionCost: subscriptionCostInterface = await subscriptionCostModel.create(payload);
             return subscriptionCost;

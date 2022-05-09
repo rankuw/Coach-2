@@ -1,4 +1,4 @@
-export default class Base{
+export default class Base<T>{
     readonly model: any;
     constructor(model: any){
         this.model = model;
@@ -6,9 +6,9 @@ export default class Base{
     getModel() {
         return this.model;
     }
-    addValue = async (payload: any) => {
+    addValue = async (payload: any): Promise<T> => {
         try{
-            const newDoc = await this.getModel().create(payload);
+            const newDoc: T = await this.getModel().create(payload);
             return newDoc;
         }catch(err){
             return Promise.reject(err);
@@ -16,7 +16,7 @@ export default class Base{
     }
     getValues = async(query: any = {}) => {
         try{
-            const docs = await this.getModel().find(query);
+            const docs: [T] = await this.getModel().find(query);
             return docs;
         }catch(err){
             return Promise.reject(err);
@@ -24,7 +24,7 @@ export default class Base{
     }
     getValue =async (query: any) => {
         try{
-            const doc = await this.getModel().findOne(query);
+            const doc: T = await this.getModel().findOne(query);
             return doc;
         }catch(err){
             return Promise.reject(err);

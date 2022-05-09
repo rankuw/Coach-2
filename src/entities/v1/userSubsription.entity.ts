@@ -1,6 +1,7 @@
+import { userSubscriptionInterface } from "../../interface";
 import userSubscriptionModel from "../../models/v1/userSubscription.model"
 import Base from "../base"
-class UserSubscriptionEntity extends Base{
+class UserSubscriptionEntity<T> extends Base<T>{
     
     constructor(){
         super(userSubscriptionModel);
@@ -30,4 +31,4 @@ class UserSubscriptionEntity extends Base{
     }
 }
 
-export const userSubscriptionEntity = new UserSubscriptionEntity();
+export const userSubscriptionEntity = new UserSubscriptionEntity<userSubscriptionInterface>();

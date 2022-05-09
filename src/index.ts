@@ -6,6 +6,7 @@ import connectDB from "./config/mongodb.config";
 import {redis }from "./config/redis.config";
 import userRoute from "./routes/v1/user.route";
 import adminRoute from "./routes/v1/admin.route";
+import workoutRoute from "./routes/v1/workout.route";
 import {swaggerFunction} from "./lib/swagger";
 import Logger from "./logger"
 import {PORT} from "./constants/index";
@@ -23,7 +24,7 @@ app.use("/pictures",express.static("pictures"))
 app.use("/api-docs", serve, setup(swaggerFunction())) //path for swagger api doc
 // app.use("/api/athlete/v1", athleteRouter); // athlete routes.
 // app.use("/api/coach/v1", coachRouter); // coach route
-app.use("/api/user/v1", userRoute, subscriptionRoute, exerciseRoute);
+app.use("/api/user/v1", userRoute, subscriptionRoute, exerciseRoute, workoutRoute);
 app.use("/api/admin/v1", adminRoute);
 
 
@@ -36,4 +37,4 @@ app.all('*', (req, res, next) => { //to check if a user goes to a undocumented p
 
 app.listen(PORT, () => {
     logger.info(`Server live on port ${PORT}`);
-})
+});

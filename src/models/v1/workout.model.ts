@@ -33,7 +33,7 @@ const workoutSchema: Schema<workoutInterface> = new Schema<workoutInterface>({
         required: true
     },
     time: {
-        type: Number,
+        type: String,
         required: true
     }
 })

@@ -2,7 +2,6 @@ import { Router} from "express";
 import SignupController from "../../controller/v1/user.controller";
 import UserController from "../../controller/v1/user.controller";
 import validator from "../../middleware/validator.middleware";
-import upload from "../../middleware/multer.middleware";
 import session from "../../middleware/session.middleware";
 import {USERTYPE} from "../../constants"
 

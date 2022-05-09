@@ -1,10 +1,11 @@
 import Base from "../base";
 import Logger from "../../logger";
 import ExerciseModel from "../../models/v1/exercise.model";
+import { exerciseInterface } from "../../interface";
 
 const logger = Logger("exercise-entity");
 
-export class ExerciseEntity extends Base{
+class ExerciseEntity<T> extends Base<T>{
     constructor(){
         super(ExerciseModel);
     }
@@ -12,4 +13,4 @@ export class ExerciseEntity extends Base{
 
 }
 
-export const exerciseEntity = new ExerciseEntity();
+export const exerciseEntity = new ExerciseEntity<exerciseInterface>();
