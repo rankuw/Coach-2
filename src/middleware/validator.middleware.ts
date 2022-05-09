@@ -97,7 +97,7 @@ class Validator{
 
     validatePhoneOtp = [
         this.validatePhone[0],
-        check("code").exists().withMessage("Code not provided").isNumeric().withMessage("Code should be numeric").isLength({min: 4, max: 4}).withMessage('Invalid code length'),
+        check("code").exists().withMessage("Code not provided").matches(/^[0-9]{4}$/).withMessage("Invalid code format").isLength({min: 4, max: 4}).withMessage('Invalid code length'),
         this.checkValidation
     ]
 
