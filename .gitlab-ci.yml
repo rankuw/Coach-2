@@ -1,0 +1,48 @@
+stages:
+  - dev_build
+  - dev_deploy
+      
+dev_build:
+  image: node:14.14.0
+  stage: dev_build
+  script:
+    - node -v
+    - npm -v
+    - npm cache clean --force
+    - npm cache verify
+    - npm install typescript@4.6.2 -g   
+    - cp $ENV_DEV .env.dev
+    - cp .env.dev env.dev
+    - ls -la
+    - npm install
+    - ls -la
+    - cat env.dev
+    - tar -czf coach_project_dev_backend_artifact.tar.gz *
+  artifacts:
+    paths:
+      - coach_project_dev_backend_artifact.tar.gz
+    expire_in: 1 hrs 00 min
+  only:
+    - dev
+
+dev_deploy:
+  stage: dev_deploy
+  image: node:14.14.0
+  before_script:
+    - apk update && apk add openssh-client bash
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - touch ~/.ssh/config
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - ssh-keyscan -H $DEPLOY_SERVER_IP >> ~/.ssh/known_hosts
+
+  script:
+    - echo "Delploying project..."
+    - pwd
+    - ls -la
+    - scp -rp coach_project_dev_backend_artifact.tar.gz ec2-user@$DEPLOY_SERVER_IP:/home/ec2-user
+    - ssh ec2-user@$DEPLOY_SERVER_IP 'bash' < ./scripts/start_dev.sh
+    - echo "Deployment complete."
+  only:
+    - dev
