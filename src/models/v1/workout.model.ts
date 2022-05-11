@@ -35,6 +35,10 @@ const workoutSchema: Schema<workoutInterface> = new Schema<workoutInterface>({
     time: {
         type: String,
         required: true
+    },
+    exercises: {
+        type: [Schema.Types.ObjectId],
+        required: true
     }
 })
 

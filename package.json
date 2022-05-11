@@ -5,10 +5,10 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "local": "NODE_ENV=local HOST=localhost nodemon ./src/index.ts",
-    "dev": "tsc && NODE_ENV=dev HOST=coachdevapi.appskeeper.in  node ./dist/index.js",
-    "qa": "tsc && NODE_ENV=qa HOST=coachqaapi.appskeeper.in node ./dist/index.js",
-    "stage": "tsc && NODE_ENV=stage HOST=coachstgapi.appskeeper.in node ./dist/index.js",
+    "local": "tsc && NODE_ENV=local node ./dist/index.js",
+    "dev": "tsc && NODE_ENV=dev node ./dist/index.js",
+    "qa": "tsc && NODE_ENV=qa node ./dist/index.js",
+    "stage": "tsc && NODE_ENV=stage node ./dist/index.js",
     "build": "tsc",
     "prebuild": "rm -rf dist"
   },

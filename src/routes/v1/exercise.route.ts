@@ -1,6 +1,8 @@
 import {Router} from "express";
+import { USERTYPE } from "../../constants";
 import AdminController from "../../controller/v1/admin.controller";
 import ExerciseController from "../../controller/v1/exercise.controller";
+import session from "../../middleware/session.middleware";
 const exerciseRoute = Router();
 
 
@@ -102,6 +104,94 @@ const exerciseRoute = Router();
  */
   exerciseRoute.get("/exercise/:difficulty",
   ExerciseController.getExercise
+)
+
+/**
+ * @swagger
+ * /api/user/v1/exercise/finish:
+ *   patch:
+ *      summary: Get subscription plans.
+ *      tags: [Exercise]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                workout:
+ *                  type: string
+ *                  required: true
+ *                  example: 6278b31886244e3928819b0e
+ *                exercise:
+ *                  type: string
+ *                  required: true
+ *                  example: 6276bb58c5b81eafda326568
+ *                
+ *      responses:
+ *        200:
+ *          description: Subscription plans returned.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          
+ * 
+ *        401:
+ *          description: Unauthorized
+ *          
+ */
+ exerciseRoute.patch("/exercise/finish/one",
+   session([USERTYPE.ATHLETE]),
+   ExerciseController.finishExercise
+)
+
+/**
+ * @swagger
+ * /api/user/v1/exercise/finish/multiple:
+ *   patch:
+ *      summary: Update multiple tables.
+ *      tags: [Exercise]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                workout:
+ *                  type: string
+ *                  required: true
+ *                  example: 6278b31886244e3928819b0e
+ *                exercises:
+ *                  type: array
+ *                  required: true
+ *                  items:
+ *                    type: array
+ *                  example: ["6276bb58c5b81eafda326568", "6276bb9dc5b81eafda32656c"]
+ *                
+ *      responses:
+ *        200:
+ *          description: Subscription plans returned.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          
+ * 
+ *        401:
+ *          description: Unauthorized
+ *          
+ */
+exerciseRoute.patch("/exercise/finish/multiple",
+   session([USERTYPE.ATHLETE]),
+   ExerciseController.finishMultipleExercise
 )
 
  export default exerciseRoute;

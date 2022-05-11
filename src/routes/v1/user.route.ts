@@ -121,7 +121,7 @@ const userRoute = Router();
  *      summary: Register a user and send verification link to his email.
  *      tags: [SignUp]
  *      requestBody:
- *        requird: true
+ *        required: true
  *        content:
  *          application/json:
  *            schema:
@@ -808,6 +808,61 @@ userRoute.patch("/uploadPicture",
     validator.validateSession,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.image
+)
+
+/**
+ * @swagger
+ * /api/user/v1/add:
+ *   post:
+ *      summary: Connect a user with another.
+ *      tags: [User]
+ *      requestBody:
+ *        requird: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                userToAdd: 
+ *                  type: string
+ *                  required: true
+ *                  example: 6270be493ae62de8e94f060d
+ *      security:
+ *        - bearerAuth: []
+ *        - device-id: []      
+ *                  
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+userRoute.post("/add",
+    session([USERTYPE.ATHLETE, USERTYPE.COACH]),
+    UserController.addUser
 )
 
 export default userRoute ;

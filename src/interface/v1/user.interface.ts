@@ -38,11 +38,30 @@ import { USERTYPE, WORKOUT } from "../../constants";
         autoRenew: boolean
     }
 
-    export interface userWorkout{
+    export interface userWorkoutInterface{
+        _id: string | Types.ObjectId
         user: Types.ObjectId,
         workout: Types.ObjectId,
         startDate: Date,
-        repetatition: number,
+        repetation: number,
         performAt: string,
         status: WORKOUT
+    }
+
+    export interface userExerciseInterface{
+        _id: string | Types.ObjectId
+        user: Types.ObjectId,
+        exercise: Types.ObjectId,
+        isCompleted: boolean
+    }
+
+    export interface coachAthleteInterface{
+        _id: string | Types.ObjectId
+        athlete: Types.ObjectId,
+        coach: Types.ObjectId
+    }
+
+    export interface sessionDetail{
+        _id: string,
+        userType: USERTYPE
     }

@@ -1,5 +1,9 @@
 import {Request, Response} from "express";
+import { STATUS_MSG} from "../../constants";
 import { exerciseEntity } from "../../entities/v1/exercise.entity";
+import { userExerciseEntity } from "../../entities/v1/userExercise.entity";
+import { userWokoutEntity } from "../../entities/v1/userWorkout.entity";
+import { sessionDetail, userExerciseInterface } from "../../interface";
 import Logger from "../../logger";
 import { errorHandler } from "../../utils";
 
@@ -39,6 +43,43 @@ export default class ExerciseController{
             const difficulty = req.params.difficulty
             const exercise = await exerciseEntity.getValues({difficulty});
             res.status(200).json(exercise);
+        }catch(err){
+            errorHandler(err, res);
+        }
+    }
+
+    static async finishExercise(req: Request, res: Response){
+        const {_id: user} = <sessionDetail>req.user;
+        const {exercise, workout} = req.body;
+        try{
+            const userWorkout = await userWokoutEntity.getValue({workout, user});
+            console.log(userWorkout);
+            
+            if(userWorkout){
+                const result = await userExerciseEntity.markComplete({user: userWorkout._id, exercise});
+                const unfinshedExercise: [userExerciseInterface] = await userExerciseEntity.getValues({user: userWorkout._id, isCompleted: false});
+                res.status(201).json(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, "exercise status", {"finished": unfinshedExercise.length < 1}));
+                
+            }
+            else{
+                throw STATUS_MSG.ERROR.BAD_REQUEST("incorrect user or workout");
+            }
+
+            
+        }catch(err){
+            errorHandler(err, res);
+        }
+    }
+
+    static async finishMultipleExercise(req: Request, res: Response){
+        const {_id: user} = <sessionDetail>req.user;
+        const {exercises, workout} = req.body;
+        try{
+            const userWorkout = await userWokoutEntity.getValue({workout, user});
+            if(userWorkout){
+                const result = await userExerciseEntity.markCompleteMultiple({user: userWorkout._id, exercises});
+                res.json(result);
+            }
         }catch(err){
             errorHandler(err, res);
         }

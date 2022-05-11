@@ -40,9 +40,6 @@ export class UserEntity{
      */
     static async findUserDetails(loginDetail: loginInterface): Promise<userInterface|null> { 
         try{
-            if(loginDetail._id){
-                loginDetail._id = new Types.ObjectId(loginDetail._id);
-            }
             delete loginDetail.password;
             const user: HydratedDocument<userInterface>|null = await this.getModel().findOne({...loginDetail, active: true});
             if(user){
@@ -74,7 +71,6 @@ export class UserEntity{
                 return null;
             }
         }catch(err){
-            console.log(err);
             logger.error(err);
             return Promise.reject(STATUS_MSG.ERROR.DB_ERROR);
         }
@@ -124,9 +120,6 @@ export class UserEntity{
      */
     static async userExists(payLoad: any): Promise<boolean>{
         try{
-            if(payLoad._id){
-                payLoad._id = new Types.ObjectId(payLoad._id);
-            }
             const userExists = await this.getModel().findOne(payLoad);
             if(userExists){
                 return true;
@@ -139,6 +132,15 @@ export class UserEntity{
         }
     }
 
+    static async getUser(payLoad: any): Promise<userInterface|null>{
+        try{
+            const user = await UserModel.findOne(payLoad);
+            return user;
+        }catch(err: any){
+            logger.error(err);
+            return Promise.reject(STATUS_MSG.ERROR.DB_ERROR(err.message));
+        }
+    }
 
 }
 

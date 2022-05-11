@@ -6,6 +6,7 @@ import { JWT_SECRET } from "../constants";
 import {SessionEntity} from "../entities/";
 import Logger from "../logger";
 import { errorHandler, extractToken } from "../utils";
+import { sessionDetail } from "../interface";
 const logger = Logger("session-middleware");
 
 export default function session(users: USERTYPE[]){
@@ -23,7 +24,11 @@ export default function session(users: USERTYPE[]){
                 res.status(401).json(STATUS_MSG.ERROR.UNAUTHORIZED);
             }else{
                 logger.info(_id);
-                req.user = _id;
+                const userDetails: sessionDetail = {
+                    _id,
+                    userType
+                }
+                req.user = userDetails;
                 next();
             }
         }catch(err: any){

@@ -88,6 +88,11 @@ const workoutRoute = Router();
  *           type: string
  *           description: Time when athlete will perform this workout.
  *           required: true
+ *         exercises: 
+ *           type: [ObjectId]
+ *           description: The exercises for this workout
+ *           required: true
+ * 
  * 
  *       example:
  *         coach: 626f677b6babc732f3b40aab
@@ -98,6 +103,7 @@ const workoutRoute = Router();
  *         duration: 20
  *         calories: 120
  *         time: 4:10
+ *         exercises: [6276bb58c5b81eafda326568, 6276bb9dc5b81eafda32656c]
  *         
  *   securitySchemes:
  *     device-id:
@@ -168,4 +174,79 @@ const workoutRoute = Router();
     WorkoutController.addWorkout
 )
 
+
+/**
+ * @swagger
+ * /api/user/v1/workout/assign:
+ *   post:
+ *      summary: Register a user and send verification link to his email.
+ *      tags: [Workout]
+ *      requestBody:
+ *        requird: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                user: 
+ *                  type: string
+ *                  required: true
+ *                  example: 6270be493ae62de8e94f060d
+ *                workout:
+ *                  type: string
+ *                  required: true
+ *                  example: 6278b31886244e3928819b0e
+ *                startDate:
+ *                  type: Date
+ *                  required: true
+ *                  example: 2/1/2022
+ *                repetation:
+ *                  type: Number
+ *                  required: true
+ *                  example: 2
+ *                performAt:
+ *                  type: string
+ *                  required: true
+ *                  example: 7:00 AM
+ *                Status: 
+ *                  type: number
+ *                  required: true
+ *                  example: 0
+ *                  
+ *      
+ *      
+ *                  
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+
+workoutRoute.post("/workout/assign",
+    WorkoutController.assignWorkout
+)
 export default workoutRoute;

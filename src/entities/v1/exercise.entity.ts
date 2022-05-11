@@ -10,7 +10,7 @@ class ExerciseEntity<T> extends Base<T>{
         super(ExerciseModel);
     }
 
-
+    
 }
 
 export const exerciseEntity = new ExerciseEntity<exerciseInterface>();

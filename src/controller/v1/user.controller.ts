@@ -1,10 +1,11 @@
 import {NextFunction, Request, Response} from "express";
 import {sendOTP, verifyOTP, errorHandler, createToken, sendEmail, extractToken, passwordCompare} from "../../utils/index"
-import { loginInterface, userInterface} from "../../interface/";
+import { loginInterface, sessionDetail, userInterface} from "../../interface/";
 import Logger from "../../logger";
 import {UserEntity, SessionEntity }from "../../entities/"
 import { HOST, PORT, STATUS_MSG } from "../../constants";
 import upload from "../../middleware/multer.middleware";
+import { coachAthleteEntity } from "../../entities/v1/coachAthlete.entity";
 
 const logger = Logger("user-controller");
 export default class UserController{
@@ -232,7 +233,7 @@ export default class UserController{
         static async newPassword(req: Request, res: Response){
             const {password} = req.body;
             try{
-                const _id = <string>req.user;
+                const {_id} = <sessionDetail>req.user;
                 const user = <userInterface|null> await UserEntity.updateUser({_id}, {password});
                 if(!user){
                     throw STATUS_MSG.ERROR.FORBIDDEN("User not found");
@@ -269,6 +270,7 @@ export default class UserController{
                         // create or update session if user exists.
                         const sessionId = await SessionEntity.createSession(user.id, deviceId, user.userType);
                         const token: string = "Bearer " + createToken({_id: user.id, sessionId, userType: user.userType});
+                        console.log(user);
                         res.status(201).json(STATUS_MSG.DATA_RESPONSE(201, true, "user logger in", {user, token}));
                     }else{
                         res.status(401).json(STATUS_MSG.DATA_RESPONSE(401, false, "wrong credentials", {}));
@@ -285,7 +287,7 @@ export default class UserController{
         // @route POST /api/user/v1/profile
         // @access Private
         static async getUserDetails(req: Request, res: Response){
-            const _id = <string>req.user;
+            const {_id} = <sessionDetail>req.user;
             try{
                 const user = await UserEntity.findUserDetails({_id});
                 if(user){
@@ -306,7 +308,7 @@ export default class UserController{
         // @access Private
         static async newDOB(req: Request, res: Response){
             const DOB: string = new Date(req.body.DOB).toDateString();
-            const _id = <string>req.user;
+            const {_id} = <sessionDetail>req.user;
             try{
                 const isUpdated = await UserEntity.updateUser({_id}, {DOB});
                 logger.info(isUpdated);
@@ -355,7 +357,25 @@ export default class UserController{
             })
         }
 
-        
+        static async addUser(req: Request, res: Response){
+            try{
+                const {_id, userType} = <sessionDetail>req.user;
+                const {userToAdd} = req.body;
+                const user = await UserEntity.getUser({_id: userToAdd, userType: !userType});
+                if(!user){
+                    res.status(404).json(STATUS_MSG.ERROR.NOT_EXIST(""))
+                }else{
+                    const coach = userType? user: _id;
+                    const athlete = userType? _id: user;
+                    const coachAthlete = await coachAthleteEntity.addValue({coach, athlete });
+                    res.send(coachAthlete);
+                }
+
+            }catch(err){
+                logger.error(err);
+                errorHandler(err, res);
+            }
+        }
 }
 
 

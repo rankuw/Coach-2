@@ -9,7 +9,8 @@ export interface workoutInterface{
     description: string,
     duration: number,
     calories: number,
-    time: string
+    time: string,
+    exercises: [Types.ObjectId]
 } 
 
 export interface workoutExerciseInterface{

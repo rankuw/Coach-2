@@ -14,7 +14,7 @@ export default class Base<T>{
             return Promise.reject(err);
         }
     }
-    getValues = async(query: any = {}) => {
+    getValues = async(query: any = {}): Promise<[T]> => {
         try{
             const docs: [T] = await this.getModel().find(query);
             return docs;
@@ -22,7 +22,7 @@ export default class Base<T>{
             return Promise.reject(err);
         }
     }
-    getValue =async (query: any) => {
+    getValue =async (query: any): Promise<T> => {
         try{
             const doc: T = await this.getModel().findOne(query);
             return doc;

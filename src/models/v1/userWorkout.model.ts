@@ -1,8 +1,8 @@
 import { Schema, model, Model } from "mongoose";
 import { WORKOUT } from "../../constants";
-import { userWorkout } from "../../interface";
+import { userWorkoutInterface } from "../../interface";
 
-const userWorkoutSchema: Schema<userWorkout> = new Schema<userWorkout>({
+const userWorkoutSchema: Schema<userWorkoutInterface> = new Schema<userWorkoutInterface>({
     user: {
         type: Schema.Types.ObjectId,
         required: true
@@ -15,7 +15,7 @@ const userWorkoutSchema: Schema<userWorkout> = new Schema<userWorkout>({
         type: Date,
         required: true
     },
-    repetatition: {
+    repetation: {
         type: Number,
         required: true
     },
@@ -25,8 +25,9 @@ const userWorkoutSchema: Schema<userWorkout> = new Schema<userWorkout>({
     },
     status: {
         type: Number,
-        enum: WORKOUT
+        enum: WORKOUT,
+        default: 0
     }
 });
 
-const userWorkoutModel: Model<userWorkout> = model("userWorkout", userWorkoutSchema);
+export const userWorkoutModel: Model<userWorkoutInterface> = model("userWorkout", userWorkoutSchema);
