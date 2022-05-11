@@ -7,7 +7,8 @@ chown -R coach_user:coach_user /var/www/html/coach_project/backend/dev/
 pwd
 ls -la
 su coach_user
-cp env.dev .env
+mkdir environments
+cp env.dev .env.dev && mv .env.dev environments/
 ls -la
 pm2 delete dev
 tsc && NODE_ENV=dev pm2 start dist/index.js --name dev
