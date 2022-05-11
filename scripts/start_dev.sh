@@ -10,5 +10,5 @@ su coach_user
 cp env.dev .env
 ls -la
 cd /var/www/html/coach_project/backend/
-pm2 delete dev
-pm2 start dev
+pm2 delete npm -- run dev
+pm2 start npm -- run dev
