@@ -13,4 +13,6 @@ export const {
     GOOGLE_PASSWORD="",
     NODE_ENV="dev",
     HOST = "localhost",
+    REDIS_HOST,
+    REDIS_PORT
 } = process.env;

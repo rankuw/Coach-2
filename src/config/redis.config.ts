@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import { STATUS_MSG } from "../constants";
+import { REDIS_HOST, REDIS_PORT, STATUS_MSG } from "../constants";
 import {ISession} from "../interface/"
 import * as util from "util";
 import Logger from "../logger/";
@@ -8,7 +8,9 @@ import { errorHandler } from "../utils";
 const logger = Logger("redisDao");
 
 class redisDAO {
-    client = createClient();
+    client = createClient({
+        url: `redis://${REDIS_HOST}:${REDIS_PORT}`
+    })
     readonly Session = "rsession";
     async connect(): Promise<void> {
         try {
