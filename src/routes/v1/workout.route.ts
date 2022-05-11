@@ -128,7 +128,7 @@ const workoutRoute = Router();
  * @swagger
  * /api/user/v1/workout/add:
  *   post:
- *      summary: Register a user and send verification link to his email.
+ *      summary: create a workout and add exercises to it.
  *      tags: [Workout]
  *      requestBody:
  *        requird: true
@@ -171,6 +171,7 @@ const workoutRoute = Router();
  *                $ref: '#/components/schemas/Result'
  */
  workoutRoute.post("/workout/add",
+    session([USERTYPE.ATHLETE]),
     WorkoutController.addWorkout
 )
 
@@ -179,7 +180,7 @@ const workoutRoute = Router();
  * @swagger
  * /api/user/v1/workout/assign:
  *   post:
- *      summary: Register a user and send verification link to his email.
+ *      summary: Assign a workout to an athlete.
  *      tags: [Workout]
  *      requestBody:
  *        requird: true
@@ -215,7 +216,9 @@ const workoutRoute = Router();
  *                  
  *      
  *      
- *                  
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
  *      responses:
  *        201:
  *          description: User profile created and email sent for verification
@@ -247,6 +250,7 @@ const workoutRoute = Router();
  */
 
 workoutRoute.post("/workout/assign",
+    session([USERTYPE.ATHLETE]),
     WorkoutController.assignWorkout
 )
 export default workoutRoute;

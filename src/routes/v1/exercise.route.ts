@@ -47,7 +47,7 @@ const exerciseRoute = Router();
  * @swagger
  * /api/user/v1/exercise:
  *   get:
- *      summary: Get subscription plans.
+ *      summary: Get all exercies in a database.
  *      tags: [Exercise]
  *      
  *      security:
@@ -78,7 +78,7 @@ const exerciseRoute = Router();
  * @swagger
  * /api/user/v1/exercise/{difficulty}:
  *   get:
- *      summary: Get subscription plans.
+ *      summary: Get all exercises based on difficulty.
  *      tags: [Exercise]
  *      parameters:
  *        - in: path
@@ -110,7 +110,7 @@ const exerciseRoute = Router();
  * @swagger
  * /api/user/v1/exercise/finish:
  *   patch:
- *      summary: Get subscription plans.
+ *      summary: mark a exercise finished..
  *      tags: [Exercise]
  *      requestBody:
  *        required: true
@@ -153,7 +153,7 @@ const exerciseRoute = Router();
  * @swagger
  * /api/user/v1/exercise/finish/multiple:
  *   patch:
- *      summary: Update multiple tables.
+ *      summary: Mark multiple exercises finished.
  *      tags: [Exercise]
  *      requestBody:
  *        required: true

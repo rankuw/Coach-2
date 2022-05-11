@@ -1,5 +1,4 @@
 import {Request, Response} from "express";
-import { Result } from "express-validator";
 import { userWokoutEntity } from "../../entities/v1/userWorkout.entity";
 import { userExerciseEntity } from "../../entities/v1/userExercise.entity";
 import { workoutEntity } from "../../entities/v1/workout.entity";
@@ -7,6 +6,7 @@ import Logger from "../../logger";
 import { errorHandler } from "../../utils";
 import { UserEntity } from "../../entities";
 import { STATUS_MSG } from "../../constants";
+import { sessionDetail } from "../../interface";
 
 const logger = Logger("workout-controller");
 
@@ -28,7 +28,8 @@ export default class WorkoutController{
 
     static async assignWorkout(req: Request, res: Response){
         try{
-            const {user, workout, startDate, repetation, performAt} = req.body;
+            const {_id: user} = <sessionDetail>req.user;
+            const {workout, startDate, repetation, performAt} = req.body;
             const validation = await Promise.all([
                 await workoutEntity.getValue({_id: workout}),
                 await UserEntity.userExists({_id: user})

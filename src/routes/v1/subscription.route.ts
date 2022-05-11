@@ -90,7 +90,7 @@ const subscriptionRoute = Route();
  * @swagger
  * /api/user/v1/subscriptionPlan/select/{subscriptionId}:
  *   post:
- *      summary: Get subscription plans.
+ *      summary: Subscribe user to a subscriptioin plan.
  *      tags: [Subscription]
  *      parameters:
  *        - in: path
@@ -126,7 +126,7 @@ const subscriptionRoute = Route();
  * @swagger
  * /api/user/v1/subscriptionDetail:
  *   get:
- *      summary: Get users subscription plan.
+ *      summary: Get subscription details of a user.
  *      tags: [Subscription]
  *      security:
  *        - bearerAuth: []
