@@ -9,6 +9,5 @@ ls -la
 su coach_user
 cp env.dev .env
 ls -la
-cd /var/www/html/coach_project/backend/
-pm2 delete npm -- run dev
-pm2 start npm -- run dev
+pm2 delete dev
+tsc && NODE_ENV=dev pm2 start dist/index.js --name dev
