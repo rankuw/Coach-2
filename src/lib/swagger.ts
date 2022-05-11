@@ -14,7 +14,7 @@ export const swaggerFunction = () => {
                     url: "http://localhost:3000" 
                 },
                 {
-                    url: "http://44.202.78.173:5006"
+                    url: "http://coachdevapi.appskeeper.in"
                 }
             ]
         },
