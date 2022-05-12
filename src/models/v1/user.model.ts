@@ -22,7 +22,8 @@ const userSchema: Schema<userInterface> = new Schema<userInterface>({
         default: false
     },
     DOB: {
-        type: String
+        type: Date,
+        default: null
     },
     password: {
         type: String,
@@ -34,6 +35,7 @@ const userSchema: Schema<userInterface> = new Schema<userInterface>({
     },
     profilePicUrl: {
         type: String,
+        default: ""
     },
     emailVerified: {
         type: Boolean,

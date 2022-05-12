@@ -57,7 +57,7 @@ export default class ExerciseController{
             
             if(userWorkout){
                 const result = await userExerciseEntity.markComplete({user: userWorkout._id, exercise});
-                const unfinshedExercise: [userExerciseInterface] = await userExerciseEntity.getValues({user: userWorkout._id, isCompleted: false});
+                const unfinshedExercise: userExerciseInterface[] = await userExerciseEntity.getValues({user: userWorkout._id, isCompleted: false});
                 res.status(201).json(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, "exercise status", {"finished": unfinshedExercise.length < 1}));
                 
             }

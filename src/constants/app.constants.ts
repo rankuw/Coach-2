@@ -88,7 +88,7 @@ export const STATUS_MSG = {
         USER_EXISTS: {
             statusCode: 409,
             success: false,
-            message: 'User already present.',
+            message: 'Already present.',
             data: {}
         },
         MISSING_FIELD: (message: string) => {
@@ -151,7 +151,7 @@ export const STATUS_MSG = {
             data: {}
         },
         DELETED: {
-            statusCode: 200,
+            statusCode: 201,
             success: true,
             message: 'Deleted Successfully',
             data: {}

@@ -7,7 +7,7 @@ import { USERTYPE, WORKOUT } from "../../constants";
         name: String,
         email: String,
         phoneNumber: String,
-        DOB?: String,
+        DOB?: Date,
         password: string,
         active?: boolean,
         userType: USERTYPE,
@@ -40,7 +40,7 @@ import { USERTYPE, WORKOUT } from "../../constants";
 
     export interface userWorkoutInterface{
         _id: string | Types.ObjectId
-        user: Types.ObjectId,
+        athlete: Types.ObjectId,
         workout: Types.ObjectId,
         startDate: Date,
         repetation: number,
@@ -58,7 +58,10 @@ import { USERTYPE, WORKOUT } from "../../constants";
     export interface coachAthleteInterface{
         _id: string | Types.ObjectId
         athlete: Types.ObjectId,
-        coach: Types.ObjectId
+        coach: Types.ObjectId,
+        totalExercises: number,
+        totalExercisesCompleted: number,
+        lastAssigned: string,
     }
 
     export interface sessionDetail{

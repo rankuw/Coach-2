@@ -9,7 +9,13 @@ class ExerciseEntity<T> extends Base<T>{
     constructor(){
         super(ExerciseModel);
     }
-
+    
+    async exercisesExists(exercises: string[]): Promise<boolean>{
+        const exercisesFound = await this.getModel().find({_id: {$in: exercises}});
+        const givenExerciseCount = exercises.length;
+        const foundExercisesCount = exercisesFound.length;
+        return givenExerciseCount === foundExercisesCount
+    }
     
 }
 

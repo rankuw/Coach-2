@@ -6,6 +6,8 @@ import {UserEntity, SessionEntity }from "../../entities/"
 import { HOST, PORT, STATUS_MSG } from "../../constants";
 import upload from "../../middleware/multer.middleware";
 import { coachAthleteEntity } from "../../entities/v1/coachAthlete.entity";
+import { workoutEntity } from "../../entities/v1/workout.entity";
+import { userWokoutEntity } from "../../entities/v1/userWorkout.entity";
 
 const logger = Logger("user-controller");
 export default class UserController{
@@ -360,17 +362,40 @@ export default class UserController{
         static async addUser(req: Request, res: Response){
             try{
                 const {_id, userType} = <sessionDetail>req.user;
-                const {userToAdd} = req.body;
-                const user = await UserEntity.getUser({_id: userToAdd, userType: !userType});
+                const {phoneNumber, email} = req.body;
+                const user = await UserEntity.getUser({phoneNumber, email, userType: !userType});
                 if(!user){
-                    res.status(404).json(STATUS_MSG.ERROR.NOT_EXIST(""))
+                    res.status(404).json(STATUS_MSG.ERROR.NOT_EXIST("user"))
                 }else{
                     const coach = userType? user: _id;
                     const athlete = userType? _id: user;
+                    const exists = await coachAthleteEntity.getValue({coach, athlete});
+                    if(exists){
+                        throw STATUS_MSG.ERROR.USER_EXISTS;
+                    }
                     const coachAthlete = await coachAthleteEntity.addValue({coach, athlete });
-                    res.send(coachAthlete);
+                    res.status(201).send(coachAthlete);
                 }
 
+            }catch(err){
+                logger.error(err);
+                errorHandler(err, res);
+            }
+        }
+
+        static async getConncetions(req: Request, res: Response){
+            try{
+                const {_id: user, userType} = <sessionDetail> req.user;
+                console.log(userType);
+                let connection;
+                if(userType){// user is athlete
+                    connection = await coachAthleteEntity.getAllCoach(user)
+
+                }else{ // user is coach
+                    connection = await coachAthleteEntity.getAllAthlete(user); // get all athlete from here.
+                }
+                console.log(connection);
+                res.send(connection);
             }catch(err){
                 logger.error(err);
                 errorHandler(err, res);

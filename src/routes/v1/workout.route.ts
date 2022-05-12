@@ -171,7 +171,7 @@ const workoutRoute = Router();
  *                $ref: '#/components/schemas/Result'
  */
  workoutRoute.post("/workout/add",
-    session([USERTYPE.ATHLETE]),
+    session([USERTYPE.COACH]),
     WorkoutController.addWorkout
 )
 
@@ -189,7 +189,7 @@ const workoutRoute = Router();
  *            schema:
  *              type: object
  *              properties:
- *                user: 
+ *                athlete: 
  *                  type: string
  *                  required: true
  *                  example: 6270be493ae62de8e94f060d
@@ -250,7 +250,166 @@ const workoutRoute = Router();
  */
 
 workoutRoute.post("/workout/assign",
-    session([USERTYPE.ATHLETE]),
+    session([USERTYPE.COACH]),
     WorkoutController.assignWorkout
 )
+
+/**
+ * @swagger
+ * /api/user/v1/workout/{coach}:
+ *   get:
+ *      summary: Assign a workout to an athlete.
+ *      tags: [Workout]
+ *      parameters:
+ *        - in: query
+ *          name: coach
+ *          schema:
+ *            type: string
+ *          description: The _id of coach
+ *          
+ *        - in: query
+ *          name: date
+ *          schema:
+ *            type: string
+ *          description: The date to query exercise.        
+ *      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+workoutRoute.get("/workout/:coach",
+    session([USERTYPE.ATHLETE]),
+    WorkoutController.getWorkoutsByCoach
+)
+
+/**
+ * @swagger
+ * /api/user/v1/workout:
+ *   get:
+ *      summary: Assign a workout to an athlete.
+ *      tags: [Workout]
+ *      parameters:
+ *        - in: query
+ *          name: date
+ *          schema:
+ *            type: string
+ *          description: The date to query exercise.        
+ *      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+workoutRoute.get("/workout",
+    session([USERTYPE.ATHLETE]),
+    WorkoutController.getWorkouts
+)
+
+/**
+ * @swagger
+ * /api/user/v1/workout/remove/{workout}:
+ *   delete:
+ *      summary: Remove a workout.
+ *      tags: [Workout]
+ *      parameters:
+ *        - in: path
+ *          name: workout
+ *          type: string
+ *          description: The id of exercise to remove.        
+ *      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+workoutRoute.delete("/workout/remove/:workout",
+    session([USERTYPE.COACH]),
+    WorkoutController.removeWorkout
+)
+
 export default workoutRoute;

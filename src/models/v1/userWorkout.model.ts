@@ -3,7 +3,7 @@ import { WORKOUT } from "../../constants";
 import { userWorkoutInterface } from "../../interface";
 
 const userWorkoutSchema: Schema<userWorkoutInterface> = new Schema<userWorkoutInterface>({
-    user: {
+    athlete: {
         type: Schema.Types.ObjectId,
         required: true
     },

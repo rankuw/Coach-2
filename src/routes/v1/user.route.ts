@@ -823,10 +823,14 @@ userRoute.patch("/uploadPicture",
  *            schema:
  *              type: object
  *              properties:
- *                userToAdd: 
+ *                phoneNumber: 
  *                  type: string
  *                  required: true
- *                  example: 6270be493ae62de8e94f060d
+ *                  example: "+917253830894"
+ *                email: 
+ *                  type: string
+ *                  required: true
+ *                  example: "ranvijay@gmail.com"
  *      security:
  *        - bearerAuth: []
  *        - device-id: []      
@@ -863,6 +867,51 @@ userRoute.patch("/uploadPicture",
 userRoute.post("/add",
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.addUser
+)
+
+/**
+ * @swagger
+ * /api/user/v1/connection:
+ *   get:
+ *      summary: Connect a user with another.
+ *      tags: [User]
+ *      
+ *      security:
+ *        - bearerAuth: []
+ *        - device-id: []      
+ *                  
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+userRoute.get("/connection",
+    session([USERTYPE.ATHLETE, USERTYPE.COACH]),
+    UserController.getConncetions
 )
 
 export default userRoute ;
