@@ -289,7 +289,6 @@ const workoutRoute = Router();
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-
 workoutRoute.post("/workout/assign",
     session([USERTYPE.COACH]),
     WorkoutController.assignWorkout

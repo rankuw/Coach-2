@@ -49,10 +49,6 @@ const exerciseRoute = Router();
  *   get:
  *      summary: Get all exercies in a database.
  *      tags: [Exercise]
- *      
- *      security:
- *        - bearerAuth: []
- *        - device-id: []
  *                
  *      responses:
  *        200:
@@ -71,7 +67,7 @@ const exerciseRoute = Router();
  *          
  */
  exerciseRoute.get("/exercise",
-    ExerciseController.getExercises
+   ExerciseController.getExercises
  )
 
  /**
@@ -127,6 +123,9 @@ const exerciseRoute = Router();
  *                  type: string
  *                  required: true
  *                  example: 6276bb58c5b81eafda326568
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []
  *                
  *      responses:
  *        200:
@@ -155,6 +154,11 @@ const exerciseRoute = Router();
  *   patch:
  *      summary: Mark multiple exercises finished.
  *      tags: [Exercise]
+ * 
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []      
+ * 
  *      requestBody:
  *        required: true
  *        content:
@@ -205,11 +209,7 @@ exerciseRoute.patch("/exercise/finish/multiple",
  *          name: exercise
  *          type: string
  *          description: The id of exercise to remove.        
- *      
- *      
- *      security:
- *        - device-id: []
- *        - bearerAuth: []         
+ *           
  *      responses:
  *        201:
  *          description: User profile created and email sent for verification
@@ -240,7 +240,6 @@ exerciseRoute.patch("/exercise/finish/multiple",
  *                $ref: '#/components/schemas/Result'
  */
 exerciseRoute.get("/exercise/query/:exercise",
-   session([USERTYPE.ATHLETE, USERTYPE.COACH]),
    ExerciseController.queryExercises
 )
 

@@ -57,12 +57,8 @@ const subscriptionRoute = Route();
  * @swagger
  * /api/user/v1/subscriptionPlans:
  *   get:
- *      summary: Get subscription plans.
+ *      summary: Get all subscription plans.
  *      tags: [Subscription]
- *      
- *      security:
- *        - bearerAuth: []
- *        - device-id: []
  *                
  *      responses:
  *        200:
@@ -81,8 +77,6 @@ const subscriptionRoute = Route();
  *          
  */
  subscriptionRoute.get("/subscriptionPlans",
-   validator.validateSession,
-   session([USERTYPE.ATHLETE, USERTYPE.COACH]),
    SubscriptionController.getSubscriptions
  )
 
@@ -153,9 +147,4 @@ const subscriptionRoute = Route();
     SubscriptionController.getDetails
  )
 
-
- subscriptionRoute.get("/subscription/main",
-   session([USERTYPE.ATHLETE, USERTYPE.COACH]),
-   SubscriptionController.subDetail
- )
  export default subscriptionRoute;

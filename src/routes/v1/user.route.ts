@@ -873,7 +873,7 @@ userRoute.post("/add",
  * @swagger
  * /api/user/v1/connection:
  *   get:
- *      summary: Connect a user with another.
+ *      summary: Get all connections of a user.
  *      tags: [User]
  *      
  *      security:
