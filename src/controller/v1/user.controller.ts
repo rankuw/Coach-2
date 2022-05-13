@@ -4,7 +4,7 @@ import { loginInterface, sessionDetail, userInterface} from "../../interface/";
 import Logger from "../../logger";
 import {UserEntity, SessionEntity, userSubscriptionEntity }from "../../entities/"
 import { HOST, PORT, STATUS_MSG } from "../../constants";
-import upload from "../../middleware/multer.middleware";
+import {uploadProfilePic} from "../../middleware/multer.middleware";
 import { coachAthleteEntity } from "../../entities/v1/coachAthlete.entity";
 import { workoutEntity } from "../../entities/v1/workout.entity";
 import { userWokoutEntity } from "../../entities/v1/userWorkout.entity";
@@ -194,7 +194,7 @@ export default class UserController{
                             const sessionId = await SessionEntity.createSession(user.id, deviceId, user.userType);
                             const token: string = "Bearer " + createToken({_id: user.id, sessionId, userType: user.userType});
                             
-                            res.status(200).json(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, token));
+                            res.status(200).json(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, "Phone number verified", {token}));
                         }
                     }else{
                         throw STATUS_MSG.ERROR.FORBIDDEN("phone number not found");
@@ -330,7 +330,7 @@ export default class UserController{
         // @route POST /api/user/v1/uploadPicture
         // @access Private
         static async image(req: Request, res: Response, next: NextFunction){
-            upload(req, res, async function(err){
+            uploadProfilePic(req, res, async function(err){
                 try{
                     if(err){
                         throw STATUS_MSG.ERROR.BAD_REQUEST(err.message);

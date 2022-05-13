@@ -19,6 +19,6 @@ const limits = {
     fileSize: 1024 * 1024 * 5
 }
 
-const upload = multer({storage, limits, fileFilter}).single("profileImage");
-
-export default upload;
+const upload = multer({storage, limits, fileFilter});
+export const uploadProfilePic = upload.single("profileImage");
+export const uploadWorkoutPic = upload.single("workoutImage");

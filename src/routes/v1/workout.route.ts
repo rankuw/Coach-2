@@ -96,7 +96,6 @@ const workoutRoute = Router();
  * 
  *       example:
  *         coach: 626f677b6babc732f3b40aab
- *         photoURL: adsfasdfasdfsda
  *         title: hand
  *         difficulty: Beginner
  *         description: This is a beginner workout
@@ -133,9 +132,57 @@ const workoutRoute = Router();
  *      requestBody:
  *        requird: true
  *        content:
- *          application/json:
+ *          multipart/form-date:
  *            schema:
- *              $ref: '#/components/schemas/Workout'
+ *              type: object
+ *              properties:
+ *                coach:
+ *                  type: String
+ *                  description: id of coach.
+ *                  required: true
+ *                photoURL:
+ *                  type: string
+ *                  description: photo of workout
+ *                  required: true
+ *                title:
+ *                  type: string
+ *                  description: Title of workout
+ *                  required: true
+ *                difficulty: 
+ *                  type: string
+ *                  description: difficulty level of workout.
+ *                  required: true
+ *                description: 
+ *                  type: string
+ *                  description: The description of workout.
+ *                  required: true
+ *                duration:
+ *                  type: Number
+ *                  description: duration of workout in minutes
+ *                  required: true
+ *                calories:
+ *                  type: number
+ *                  description: Calories that this workout will burn.
+ *                  required: true
+ *                time: 
+ *                  type: string
+ *                  description: Time when athlete will perform this workout.
+ *                  required: true
+ *                exercises: 
+ *                  type: [ObjectId]
+ *                  description: The exercises for this workout
+ *                  required: true    
+ *                workoutImage:
+ *                  type: string
+ *                  format: binary           
+ *              
+ *          
+ *            encoding:
+ *              workoutImage:
+ *                contentType: image/png, image/jpeg
+ *                headers:
+ *                  X-Custom-Header:
+ *                    description: The workout image
  *      
  *      security:
  *        - device-id: []

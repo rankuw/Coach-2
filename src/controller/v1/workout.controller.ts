@@ -6,9 +6,10 @@ import {exerciseEntity} from "../../entities/v1/exercise.entity"
 import Logger from "../../logger";
 import { errorHandler } from "../../utils";
 import { UserEntity } from "../../entities";
-import { STATUS_MSG, WORKOUT } from "../../constants";
+import { HOST, PORT, STATUS_MSG, WORKOUT } from "../../constants";
 import { sessionDetail } from "../../interface";
 import { coachAthleteEntity } from "../../entities/v1/coachAthlete.entity";
+import { uploadWorkoutPic } from "../../middleware/multer.middleware";
 
 const logger = Logger("workout-controller");
 
@@ -19,20 +20,37 @@ export default class WorkoutController{
     // @route POST /api/admin/v1/exercise/add
     // @access Private
     static async addWorkout(req: Request, res: Response){
-        try{
-            const exercises = <string[]>[... new Set(req.body.exercises)];
-            const allExercisesExists = await exerciseEntity.exercisesExists(exercises);
-            if(allExercisesExists){
-                const workout = await workoutEntity.addValue(req.body);
-                res.status(201).json(workout);
-            }else{
-                res.status(400).json(STATUS_MSG.ERROR.BAD_REQUEST("some exercises entered don't exist"));
-            }
-            
-        }catch(err){
-            logger.error(err);
-            errorHandler(err, res);
-        }
+        uploadWorkoutPic(req, res, async function(err){
+            try{
+                console.log(req.body);
+                if(err){
+                    throw STATUS_MSG.ERROR.BAD_REQUEST(err.message);
+                }
+                else{
+                    if(req.file?.path === undefined){
+                        throw STATUS_MSG.DATA_RESPONSE(400, false, "Image not provided", {});
+                    }
+                    console.log(req.body);
+                    req.body.exercises = ['627ba2cc881471e411e28ad2'];
+                    console.log(req.body);
+                    const photoURL: string = `${HOST}:${PORT}/${req.file?.path}`;
+                    const exercises = <string[]>[... new Set(req.body.exercises)];
+                    const exercisesCount = exercises.length;
+                    const allExercisesCount = await exerciseEntity.exercisesCount(exercises);
+                    if(allExercisesCount === exercisesCount){
+                        const workout = await workoutEntity.addValue({...req.body, photoURL});
+                        res.status(201).json(workout);
+                    }else{
+                        res.status(400).json(STATUS_MSG.ERROR.BAD_REQUEST("some exercises entered don't exist"));
+                    }
+                }
+                
+                    
+                }catch(err){
+                    logger.error(err);
+                    errorHandler(err, res);
+                }
+            })
     }
 
     
