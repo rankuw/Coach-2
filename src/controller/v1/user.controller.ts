@@ -363,26 +363,31 @@ export default class UserController{
             try{
                 const {_id, userType} = <sessionDetail>req.user;
                 const {phoneNumber, email} = req.body;
-                const {noOfSelectedUsers} = await userSubscriptionEntity.getValue({userId: _id});
-                const maxUserAllowed = await userSubscriptionEntity.getMaXUsersAllowds(_id);
-                if(maxUserAllowed <= noOfSelectedUsers){
-                    console.log(maxUserAllowed, noOfSelectedUsers)
-                    throw STATUS_MSG.ERROR.BAD_REQUEST("You can't add any more users");
-                }
                 const user = await UserEntity.getUser({phoneNumber, email, userType: !userType});
+                console.log(user);
                 if(!user){
-                    res.status(404).json(STATUS_MSG.ERROR.NOT_EXIST("user"))
-                }else{
-                    const coach = userType? user: _id;
-                    const athlete = userType? _id: user;
-                    const exists = await coachAthleteEntity.getValue({coach, athlete});
-                    if(exists){
-                        throw STATUS_MSG.ERROR.USER_EXISTS;
-                    }
-                    const coachAthlete = await coachAthleteEntity.addValue({coach, athlete });
-                    await userSubscriptionEntity.incrementNumberOfUsersAdded(_id);
-                    res.status(201).send(coachAthlete);
+                    throw STATUS_MSG.ERROR.NOT_EXIST("user");
                 }
+                const {noOfSelectedUsers: noOfSelectedUsersGuest} = await userSubscriptionEntity.getValue({userId: user.id});
+                const {noOfSelectedUsers: noOfSelectedUsersHost} = await userSubscriptionEntity.getValue({userId: _id});
+                const maxUserAllowedHost = await userSubscriptionEntity.getMaxUsersAllowed(_id);
+                const maxUserAllowedGuest = await userSubscriptionEntity.getMaxUsersAllowed(user.id);
+                console.log(noOfSelectedUsersGuest, noOfSelectedUsersHost, maxUserAllowedGuest, maxUserAllowedHost);
+                if(maxUserAllowedGuest <= noOfSelectedUsersGuest || maxUserAllowedHost <= noOfSelectedUsersHost){
+                    throw STATUS_MSG.ERROR.BAD_REQUEST("Max limit reached");
+                }
+                
+                const coach = userType? user.id: _id;
+                const athlete = userType? _id: user.id;
+                const exists = await coachAthleteEntity.getValue({coach, athlete});
+                if(exists){
+                    throw STATUS_MSG.ERROR.USER_EXISTS;
+                }
+                const coachAthlete = await coachAthleteEntity.addValue({coach, athlete });
+                await userSubscriptionEntity.incrementNumberOfUsersAdded(_id);
+                await userSubscriptionEntity.incrementNumberOfUsersAdded(user.id)
+                res.status(201).send(coachAthlete);
+                
 
             }catch(err){
                 logger.error(err);

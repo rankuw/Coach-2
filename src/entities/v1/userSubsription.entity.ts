@@ -32,7 +32,7 @@ class UserSubscriptionEntity<T> extends Base<T>{
         }
     }
 
-    getMaXUsersAllowds = async (id: string): Promise<number> =>  {
+    getMaxUsersAllowed = async (id: string): Promise<number> =>  {
         const subscriptionPlan= await this.getModel().aggregate([
             {$match: {userId: new mongoose.Types.ObjectId(id)}},
             {$lookup: {

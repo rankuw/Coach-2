@@ -77,7 +77,7 @@ export default class SubscriptionController{
     static async subDetail(req: Request, res: Response){
         try{
             const {_id} = <sessionDetail>req.user;
-            const detail = await userSubscriptionEntity.getMaXUsersAllowds(_id);
+            const detail = await userSubscriptionEntity.getMaxUsersAllowed(_id);
             console.log(detail);
             res.status(200).json({detail});
         }catch(err){
