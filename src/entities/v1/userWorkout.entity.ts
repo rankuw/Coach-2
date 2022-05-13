@@ -36,7 +36,6 @@ class UserWorkoutEntity<T> extends Base<T>{
 
     async workoutDetailsCoach(payload: any, coach: string|Types.ObjectId){
         payload.athlete = new Types.ObjectId(payload.athlete);
-        console.log(coach, 34343);
         coach = new Types.ObjectId(coach);
         const workouts = await this.getModel().aggregate([
             {$match: payload},

@@ -153,4 +153,9 @@ const subscriptionRoute = Route();
     SubscriptionController.getDetails
  )
 
+
+ subscriptionRoute.get("/subscription/main",
+   session([USERTYPE.ATHLETE, USERTYPE.COACH]),
+   SubscriptionController.subDetail
+ )
  export default subscriptionRoute;

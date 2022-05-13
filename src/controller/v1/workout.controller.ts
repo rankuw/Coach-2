@@ -104,4 +104,14 @@ export default class WorkoutController{
             errorHandler(err, res);
         }
     }
+
+    static async queryWorkouts(req: Request, res: Response){
+        const title = <string>req.params.title;
+        try{
+            const workouts = await workoutEntity.query(title);
+            res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({workouts}, "Fetch successfull"));
+        }catch(err){
+            errorHandler(err, res);
+        }
+    }
 }

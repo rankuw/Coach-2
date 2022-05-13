@@ -194,4 +194,54 @@ exerciseRoute.patch("/exercise/finish/multiple",
    ExerciseController.finishMultipleExercise
 )
 
+/**
+ * @swagger
+ * /api/user/v1/exercise/query/{title}:
+ *   get:
+ *      summary: Query a exercise by title.
+ *      tags: [Exercise]
+ *      parameters:
+ *        - in: path
+ *          name: exercise
+ *          type: string
+ *          description: The id of exercise to remove.        
+ *      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+exerciseRoute.get("/exercise/query/:exercise",
+   session([USERTYPE.ATHLETE, USERTYPE.COACH]),
+   ExerciseController.queryExercises
+)
+
  export default exerciseRoute;

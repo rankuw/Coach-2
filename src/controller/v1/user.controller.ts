@@ -2,7 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {sendOTP, verifyOTP, errorHandler, createToken, sendEmail, extractToken, passwordCompare} from "../../utils/index"
 import { loginInterface, sessionDetail, userInterface} from "../../interface/";
 import Logger from "../../logger";
-import {UserEntity, SessionEntity }from "../../entities/"
+import {UserEntity, SessionEntity, userSubscriptionEntity }from "../../entities/"
 import { HOST, PORT, STATUS_MSG } from "../../constants";
 import upload from "../../middleware/multer.middleware";
 import { coachAthleteEntity } from "../../entities/v1/coachAthlete.entity";
@@ -363,6 +363,12 @@ export default class UserController{
             try{
                 const {_id, userType} = <sessionDetail>req.user;
                 const {phoneNumber, email} = req.body;
+                const {noOfSelectedUsers} = await userSubscriptionEntity.getValue({userId: _id});
+                const maxUserAllowed = await userSubscriptionEntity.getMaXUsersAllowds(_id);
+                if(maxUserAllowed <= noOfSelectedUsers){
+                    console.log(maxUserAllowed, noOfSelectedUsers)
+                    throw STATUS_MSG.ERROR.BAD_REQUEST("You can't add any more users");
+                }
                 const user = await UserEntity.getUser({phoneNumber, email, userType: !userType});
                 if(!user){
                     res.status(404).json(STATUS_MSG.ERROR.NOT_EXIST("user"))
@@ -374,6 +380,7 @@ export default class UserController{
                         throw STATUS_MSG.ERROR.USER_EXISTS;
                     }
                     const coachAthlete = await coachAthleteEntity.addValue({coach, athlete });
+                    await userSubscriptionEntity.incrementNumberOfUsersAdded(_id);
                     res.status(201).send(coachAthlete);
                 }
 

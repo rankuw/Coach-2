@@ -44,4 +44,14 @@ export default class Base<T>{
 
         }
     }
+
+    query = async (title: string) => {
+        try{
+            const docs = await this.getModel().find({$text: {$search: title}});
+            console.log(docs);
+            return docs;
+        }catch(err){
+            return Promise.reject(err);
+        }
+    }
 }

@@ -13,8 +13,7 @@ const workoutSchema: Schema<workoutInterface> = new Schema<workoutInterface>({
     },
     title: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     difficulty: {
         type: String,
@@ -41,6 +40,6 @@ const workoutSchema: Schema<workoutInterface> = new Schema<workoutInterface>({
         required: true
     }
 })
-
+workoutSchema.index({title: "text"})
 const WorkoutModel = model("workout", workoutSchema);
 export default WorkoutModel;

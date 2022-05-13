@@ -33,7 +33,10 @@ class CoachAthleteEntity<T> extends Base<T>{
                     as: 'athlete'
                 }},
                 {$unwind: "$athlete"},
-                {$project: {"athlete.name": 1, "athlete._id": 1, "athlete.profilePicUrl": 1, totalExercises: 1, totalExercisesCompleted: 1, lastAssigned: 1, _id: 1, progress: {$multiply:  [{$divide: ["$totalExercisesCompleted", "$totalExercises"]}, 100]}}},
+                {$project: {"athlete.name": 1, "athlete._id": 1, "athlete.profilePicUrl": 1, totalExercises: 1, totalExercisesCompleted: 1, lastAssigned: 1, _id: 1, 
+                            progress: {
+                                $cond: {if: { $eq: ["$totalExercises", "0"]}, then: {$multiply:  [{$divide: ["$totalExercisesCompleted", "$totalExercises"]}, 100]}, else: 0}
+                            }}},
 
             ])
             return athleteData;

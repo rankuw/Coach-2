@@ -84,6 +84,17 @@ export default class ExerciseController{
             errorHandler(err, res);
         }
     }
+
+    static async queryExercises(req: Request, res: Response){
+        const title = <string>req.params.exercise;
+        console.log(req.params);
+        try{
+            const exercises = await exerciseEntity.query(title);
+            res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({exercises}, "Fetch successfull"));
+        }catch(err){
+            errorHandler(err, res);
+        }
+    }
 }
 
 

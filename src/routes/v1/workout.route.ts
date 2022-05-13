@@ -258,7 +258,7 @@ workoutRoute.post("/workout/assign",
  * @swagger
  * /api/user/v1/workout/{coach}:
  *   get:
- *      summary: Assign a workout to an athlete.
+ *      summary: Get workouts created by a particular coach on a paricular date
  *      tags: [Workout]
  *      parameters:
  *        - in: query
@@ -313,9 +313,60 @@ workoutRoute.get("/workout/:coach",
 
 /**
  * @swagger
+ * /api/user/v1/workout/search/{title}:
+ *   get:
+ *      summary: get all workouts with a particular title.
+ *      tags: [Workout]
+ *      parameters:
+ *        - in: path
+ *          name: title
+ *          schema:
+ *            type: string
+ *          description: The title of workout.        
+ *      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+ workoutRoute.get("/workout/search/:title",
+    session([USERTYPE.COACH]),
+    WorkoutController.queryWorkouts
+)
+
+/**
+ * @swagger
  * /api/user/v1/workout:
  *   get:
- *      summary: Assign a workout to an athlete.
+ *      summary: get all workouts assigned on a particular date.
  *      tags: [Workout]
  *      parameters:
  *        - in: query
@@ -357,14 +408,14 @@ workoutRoute.get("/workout/:coach",
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-workoutRoute.get("/workout",
+workoutRoute.get("/workout", 
     session([USERTYPE.ATHLETE]),
     WorkoutController.getWorkouts
 )
 
 /**
  * @swagger
- * /api/user/v1/workout/remove/{workout}:
+ * /api/user/v1/workout/remove/{title}:
  *   delete:
  *      summary: Remove a workout.
  *      tags: [Workout]
@@ -411,5 +462,7 @@ workoutRoute.delete("/workout/remove/:workout",
     session([USERTYPE.COACH]),
     WorkoutController.removeWorkout
 )
+
+
 
 export default workoutRoute;

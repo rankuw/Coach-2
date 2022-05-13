@@ -3,6 +3,7 @@ import {Request, Response} from "express";
 import { STATUS_MSG } from "../../constants";
 import { errorHandler } from "../../utils";
 import Logger from "../../logger";
+import { sessionDetail } from "../../interface";
 
 const logger = Logger("subscription-controller");
 
@@ -64,7 +65,7 @@ export default class SubscriptionController{
     // @access Private
     static async getDetails(req: Request, res: Response){
         try{
-            const userId = <string>req.user;
+            const {_id: userId} = <sessionDetail>req.user;
             const detail = await userSubscriptionEntity.getSubscriptionDetails({userId});
             res.send(detail);
         }catch(err: any){
@@ -73,5 +74,15 @@ export default class SubscriptionController{
         }
     }
 
-    
+    static async subDetail(req: Request, res: Response){
+        try{
+            const {_id} = <sessionDetail>req.user;
+            const detail = await userSubscriptionEntity.getMaXUsersAllowds(_id);
+            console.log(detail);
+            res.status(200).json({detail});
+        }catch(err){
+            logger.error(err);
+            errorHandler(err, res);
+        }
+    }
 }

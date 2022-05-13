@@ -21,6 +21,6 @@ const exerciseSchema: Schema<exerciseInterface> = new Schema<exerciseInterface>(
         required: true
     }
 });
-
+exerciseSchema.index({title: "text"});
 const ExerciseModel: Model<exerciseInterface> = model("exercise", exerciseSchema);
 export default ExerciseModel;
