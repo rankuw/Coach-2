@@ -271,7 +271,7 @@ export default class UserController{
                     if(checkPassword){
                         // create or update session if user exists.
                         const sessionId = await SessionEntity.createSession(user.id, deviceId, user.userType);
-                        const token: string = "Bearer " + createToken({_id: user.id, sessionId, userType: user.userType});
+                        const token: string = "Bearer " + createToken({_id: user.id, sessionId, userType: user.userType}, 600 * 600);
                         console.log(user);
                         res.status(201).json(STATUS_MSG.DATA_RESPONSE(201, true, "user logger in", {user, token}));
                     }else{

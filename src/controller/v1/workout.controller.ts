@@ -30,15 +30,13 @@ export default class WorkoutController{
                     if(req.file?.path === undefined){
                         throw STATUS_MSG.DATA_RESPONSE(400, false, "Image not provided", {});
                     }
-                    console.log(req.body);
-                    req.body.exercises = ['627ba2cc881471e411e28ad2'];
-                    console.log(req.body);
+                    const {_id: coach} = <sessionDetail>req.user;
                     const photoURL: string = `${HOST}:${PORT}/${req.file?.path}`;
                     const exercises = <string[]>[... new Set(req.body.exercises)];
                     const exercisesCount = exercises.length;
                     const allExercisesCount = await exerciseEntity.exercisesCount(exercises);
                     if(allExercisesCount === exercisesCount){
-                        const workout = await workoutEntity.addValue({...req.body, photoURL});
+                        const workout = await workoutEntity.addValue({...req.body, photoURL, coach});
                         res.status(201).json(workout);
                     }else{
                         res.status(400).json(STATUS_MSG.ERROR.BAD_REQUEST("some exercises entered don't exist"));

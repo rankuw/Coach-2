@@ -132,18 +132,10 @@ const workoutRoute = Router();
  *      requestBody:
  *        requird: true
  *        content:
- *          multipart/form-date:
+ *          multipart/form-data:
  *            schema:
  *              type: object
  *              properties:
- *                coach:
- *                  type: String
- *                  description: id of coach.
- *                  required: true
- *                photoURL:
- *                  type: string
- *                  description: photo of workout
- *                  required: true
  *                title:
  *                  type: string
  *                  description: Title of workout
@@ -169,9 +161,11 @@ const workoutRoute = Router();
  *                  description: Time when athlete will perform this workout.
  *                  required: true
  *                exercises: 
- *                  type: [ObjectId]
+ *                  type: array
+ *                  items:
+ *                    type: string
  *                  description: The exercises for this workout
- *                  required: true    
+ *                  example: ["627ba2cc881471e411e28ad2", "627ba339881471e411e28ae0"]   
  *                workoutImage:
  *                  type: string
  *                  format: binary           
