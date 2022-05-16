@@ -5,11 +5,13 @@ import { userWorkoutInterface } from "../../interface";
 const userWorkoutSchema: Schema<userWorkoutInterface> = new Schema<userWorkoutInterface>({
     athlete: {
         type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "User"
     },
     workout: {
         type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'workout'
     },
     startDate: {
         type: Date,

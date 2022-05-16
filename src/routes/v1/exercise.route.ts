@@ -104,7 +104,7 @@ const exerciseRoute = Router();
 
 /**
  * @swagger
- * /api/user/v1/exercise/finish:
+ * /api/user/v1/exercise/finish/one:
  *   patch:
  *      summary: mark a exercise finished..
  *      tags: [Exercise]
@@ -115,14 +115,14 @@ const exerciseRoute = Router();
  *            schema:
  *              type: object
  *              properties:
- *                workout:
- *                  type: string
- *                  required: true
- *                  example: 6278b31886244e3928819b0e
  *                exercise:
  *                  type: string
  *                  required: true
- *                  example: 6276bb58c5b81eafda326568
+ *                  example: 627ba2cc881471e411e28ad2
+ *                userWorkoutId:
+ *                  type: string
+ *                  required: true
+ *                  example: 62823dd24124b408fa8c8421
  *      security:
  *        - device-id: []
  *        - bearerAuth: []
@@ -166,7 +166,7 @@ const exerciseRoute = Router();
  *            schema:
  *              type: object
  *              properties:
- *                workout:
+ *                userWorkoutId:
  *                  type: string
  *                  required: true
  *                  example: 6278b31886244e3928819b0e

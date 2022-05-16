@@ -22,6 +22,16 @@ class CoachAthleteEntity<T> extends Base<T>{
         }
     }
 
+    async increaseFinishedExercises(coach: string, athlete: string){
+        try{
+            const status = await this.getModel().findOneAndUpdate({athlete, coach}, {$inc: {"totalExercisesCompleted": 1}});
+            return status;
+        }catch(err){
+            logger.error(err);
+            return Promise.reject(err);
+        }
+    }
+
     async getAllAthlete(coach: string){
         try{
             const athleteData = this.getModel().aggregate([
@@ -40,6 +50,7 @@ class CoachAthleteEntity<T> extends Base<T>{
                             }}},
 
             ])
+            console.log(athleteData);
             return athleteData;
         }catch(err){
             logger.error(err);
@@ -60,7 +71,7 @@ class CoachAthleteEntity<T> extends Base<T>{
                 {$unwind: "$coach"},
                 {$project: { "age": { $floor: {$divide: [{ $subtract: [ new Date(),  "$coach.DOB"  ] },31558464000]}}, coach: "$coach.name", coachId: "$coach._id", pic: "$coach.profilePicUrl", totalExercises: 1, totalExercisesCompleted: 1, lastAssigned: 1, 
                             progress: {
-                                $cond: {if: { $eq: ["$totalExercises", "0"]}, then: {$multiply:  [{$divide: ["$totalExercisesCompleted", "$totalExercises"]}, 100]}, else: 0}
+                                $cond: {if: { $ne: ["$totalExercises", 0]}, then: {$multiply:  [{$divide: ["$totalExercisesCompleted", "$totalExercises"]}, 100]}, else: 0}
                             }}}
             ])
             return coachData;
@@ -84,7 +95,7 @@ class CoachAthleteEntity<T> extends Base<T>{
                 {$project: {"user.name": 1, "user._id": 1, "user.profilePicUrl": 1, totalExercises: 1, totalExercisesCompleted: 1, lastAssigned: 1, _id: 1, 
                             "age": { $floor: {$divide: [{ $subtract: [ new Date(),  "$user.DOB"  ] },31558464000]}},
                             progress: {
-                                $cond: {if: { $eq: ["$totalExercises", "0"]}, then: {$multiply:  [{$divide: ["$totalExercisesCompleted", "$totalExercises"]}, 100]}, else: 0}
+                                $cond: {if: { $ne: ["$totalExercises", 0]}, then: {$multiply:  [{$divide: ["$totalExercisesCompleted", "$totalExercises"]}, 100]}, else: 0}
                             }}},
 
             ])

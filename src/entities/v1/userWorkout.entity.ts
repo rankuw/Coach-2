@@ -51,6 +51,14 @@ class UserWorkoutEntity<T> extends Base<T>{
         ]);
         return workouts;
     }
+
+    async getCoachId(_id: string){
+        const doc = await this.getModel().findOne({_id});
+        console.log(doc)
+        const workout = await doc.populate({path: 'workout', select: "coach -_id"});
+        
+        return workout.workout.coach;
+    }
 }
 
 export const userWokoutEntity = new UserWorkoutEntity<userWorkoutInterface>();

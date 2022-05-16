@@ -367,8 +367,11 @@ export default class UserController{
                 if(!user){
                     throw STATUS_MSG.ERROR.NOT_EXIST("user");
                 }
-                const guestSubscriptionPlan = await userSubscriptionEntity.getConnectionsAddedAndAllowed(user.id);
-                const hostSubscriptionPlan = await userSubscriptionEntity.getConnectionsAddedAndAllowed(_id);
+                const [guestSubscriptionPlan, hostSubscriptionPlan] = await Promise.all([
+                    await userSubscriptionEntity.getConnectionsAddedAndAllowed(user.id),
+                    await userSubscriptionEntity.getConnectionsAddedAndAllowed(_id)
+                ])
+                
                 
                 if(!hostSubscriptionPlan || !guestSubscriptionPlan){
                     throw STATUS_MSG.ERROR.BAD_REQUEST("Subscription plan missing");
@@ -386,8 +389,11 @@ export default class UserController{
                     throw STATUS_MSG.ERROR.USER_EXISTS;
                 }
                 const coachAthlete = await coachAthleteEntity.addValue({coach, athlete });
-                await userSubscriptionEntity.incrementNumberOfUsersAdded(_id);
-                await userSubscriptionEntity.incrementNumberOfUsersAdded(user.id)
+                await Promise.all([
+                    await userSubscriptionEntity.incrementNumberOfUsersAdded(_id),
+                    await userSubscriptionEntity.incrementNumberOfUsersAdded(user.id)
+                ])
+                
                 res.status(201).send(coachAthlete);
 
             }catch(err){
@@ -405,7 +411,7 @@ export default class UserController{
                     connection = await coachAthleteEntity.getAllConnectedUsers(user, 'athlete');
 
                 }else{ // user is coach
-                    connection = await coachAthleteEntity.getAllConnectedUsers(user, 'coach'); // get all athlete from here.
+                    connection = await coachAthleteEntity.getAllConnectedUsers(user, 'coach');
                 }
                 console.log(connection);
                 res.send(connection);

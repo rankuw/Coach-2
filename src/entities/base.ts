@@ -54,4 +54,13 @@ export default class Base<T>{
             return Promise.reject(err);
         }
     }
+
+    update = async (options: any, payLoad: any) => {
+        try{
+            const status = await this.getModel().updateOne(options, payLoad);
+            return status;
+        }catch(err){
+            return Promise.reject(err);
+        }
+    }
 }
