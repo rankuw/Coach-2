@@ -212,6 +212,7 @@ const workoutRoute = Router();
  *                $ref: '#/components/schemas/Result'
  */
  workoutRoute.post("/workout/add",
+    validator.validateSession,
     session([USERTYPE.COACH]),
     WorkoutController.addWorkout
 )
@@ -290,6 +291,7 @@ const workoutRoute = Router();
  *                $ref: '#/components/schemas/Result'
  */
 workoutRoute.post("/workout/assign",
+    validator.validateSession,
     session([USERTYPE.COACH]),
     WorkoutController.assignWorkout
 )
@@ -347,6 +349,7 @@ workoutRoute.post("/workout/assign",
  *                $ref: '#/components/schemas/Result'
  */
 workoutRoute.get("/workout/:coach",
+    validator.validateSession,
     session([USERTYPE.ATHLETE]),
     WorkoutController.getWorkoutsByCoach
 )
@@ -398,6 +401,7 @@ workoutRoute.get("/workout/:coach",
  *                $ref: '#/components/schemas/Result'
  */
  workoutRoute.get("/workout/search/:title",
+    validator.validateSession,
     session([USERTYPE.COACH]),
     WorkoutController.queryWorkouts
 )
@@ -449,6 +453,7 @@ workoutRoute.get("/workout/:coach",
  *                $ref: '#/components/schemas/Result'
  */
 workoutRoute.get("/workout", 
+    validator.validateSession,
     session([USERTYPE.ATHLETE]),
     WorkoutController.getWorkouts
 )
@@ -499,6 +504,7 @@ workoutRoute.get("/workout",
  *                $ref: '#/components/schemas/Result'
  */
 workoutRoute.delete("/workout/remove/:workout",
+    validator.validateSession,
     session([USERTYPE.COACH]),
     WorkoutController.removeWorkout
 )

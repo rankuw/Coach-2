@@ -309,7 +309,7 @@ export default class UserController{
         // @route POST /api/user/v1/setDOB
         // @access Private
         static async newDOB(req: Request, res: Response){
-            const DOB: string = new Date(req.body.DOB).toDateString();
+            const DOB: string = req.body.DOB;
             const {_id} = <sessionDetail>req.user;
             try{
                 const isUpdated = await UserEntity.updateUser({_id}, {DOB});
@@ -398,10 +398,9 @@ export default class UserController{
         static async getConncetions(req: Request, res: Response){
             try{
                 const {_id: user, userType} = <sessionDetail> req.user;
-                console.log(userType);
                 let connection;
                 if(userType){// user is athlete
-                    connection = await coachAthleteEntity.getAllCoach(user)
+                    connection = await coachAthleteEntity.getAllCoach(user);
 
                 }else{ // user is coach
                     connection = await coachAthleteEntity.getAllAthlete(user); // get all athlete from here.

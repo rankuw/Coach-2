@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import {check, validationResult, query, header} from "express-validator";
+import {check, validationResult, query, header, body} from "express-validator";
 import { errorHandler } from "../utils";
 import { STATUS_MSG } from "../constants/app.constants";
 import Logger from "../logger";
@@ -138,6 +138,12 @@ class Validator{
         this.checkValidation
     ]
     
+    // ! tododododododododododododo.
+    assignWorkout = [
+        check("athlete").exists().withMessage("athlete id missing").isString().withMessage("invalid id provided").isLength({min: 12, max: 12}).withMessage("Invalid id").bail(),
+        check("workout").exists().withMessage("workout id missing").isString().withMessage("invalid id").isLength({min: 12, max: 12}).withMessage("Invalid id").bail(),
+        
+    ]
     
 }
 

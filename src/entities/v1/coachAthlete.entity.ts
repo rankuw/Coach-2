@@ -47,18 +47,24 @@ class CoachAthleteEntity<T> extends Base<T>{
     }
 
     async getAllCoach(athlete: string){
-        const coachData = this.getModel().aggregate([
-            {$match: {athlete: new mongoose.Types.ObjectId(athlete)}},
-            {$lookup: {
-                from: 'users',
-                localField: 'coach',
-                foreignField: '_id',
-                as: 'coach'
-            }},
-            {$unwind: "$coach"},
-            {$project: {coach: "coach.name", coachId: "coach._id"}}
-        ])
-        return coachData;
+        try{
+            const coachData = await this.getModel().aggregate([
+                {$match: {athlete: new mongoose.Types.ObjectId(athlete)}},
+                {$lookup: {
+                    from: 'users',
+                    localField: 'coach',
+                    foreignField: '_id',
+                    as: 'coach'
+                }},
+                {$unwind: "$coach"},
+                // {$project: {coach: "$coach.name", coachId: "$coach._id"}}
+                {$addFields: { age: { $subtract: [new Date(), "$coach.DOB"] }}}
+            ])
+            return coachData;
+        }catch(err){
+            logger.error(err);
+            return Promise.reject(err);
+        }
     }
 }
 
