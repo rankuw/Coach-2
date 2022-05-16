@@ -1,5 +1,6 @@
 import { check } from "express-validator";
 import mongoose from "mongoose";
+import { STATUS_MSG } from "../../constants";
 import { userSubscriptionInterface } from "../../interface";
 import userSubscriptionModel from "../../models/v1/userSubscription.model"
 import Base from "../base"
@@ -13,6 +14,9 @@ class UserSubscriptionEntity<T> extends Base<T>{
         try{
             
             const doc = await this.getModel().findOne(payload);
+            if(!doc){
+                throw STATUS_MSG.ERROR.BAD_REQUEST("no plan found");
+            }
             console.log(doc);
             await Promise.all([
                 doc.populate({path: "userId", select: "phoneNumber email -_id"}),
@@ -32,7 +36,7 @@ class UserSubscriptionEntity<T> extends Base<T>{
         }
     }
 
-    getMaxUsersAllowed = async (id: string): Promise<number> =>  {
+    getConnectionsAddedAndAllowed = async (id: string): Promise<any> =>  {
         const subscriptionPlan= await this.getModel().aggregate([
             {$match: {userId: new mongoose.Types.ObjectId(id)}},
             {$lookup: {
@@ -52,10 +56,10 @@ class UserSubscriptionEntity<T> extends Base<T>{
                 ]
             }},
             {$unwind: "$subCost"},
-            {$project: {"allowed": "$subCost.allowed"}}
+            {$project: {"allowed": "$subCost.allowed", "selected": "$noOfSelectedUsers"}}
         ])
         console.log(subscriptionPlan)
-        return subscriptionPlan[0].allowed;
+        return subscriptionPlan[0];
     }
 
     incrementNumberOfUsersAdded = async (id: string) => {

@@ -364,16 +364,18 @@ export default class UserController{
                 const {_id, userType} = <sessionDetail>req.user;
                 const {phoneNumber, email} = req.body;
                 const user = await UserEntity.getUser({phoneNumber, email, userType: !userType});
-                console.log(user);
                 if(!user){
                     throw STATUS_MSG.ERROR.NOT_EXIST("user");
                 }
-                const {noOfSelectedUsers: noOfSelectedUsersGuest} = await userSubscriptionEntity.getValue({userId: user.id});
-                const {noOfSelectedUsers: noOfSelectedUsersHost} = await userSubscriptionEntity.getValue({userId: _id});
-                const maxUserAllowedHost = await userSubscriptionEntity.getMaxUsersAllowed(_id);
-                const maxUserAllowedGuest = await userSubscriptionEntity.getMaxUsersAllowed(user.id);
-                console.log(noOfSelectedUsersGuest, noOfSelectedUsersHost, maxUserAllowedGuest, maxUserAllowedHost);
-                if(maxUserAllowedGuest <= noOfSelectedUsersGuest || maxUserAllowedHost <= noOfSelectedUsersHost){
+                const guestSubscriptionPlan = await userSubscriptionEntity.getConnectionsAddedAndAllowed(user.id);
+                const hostSubscriptionPlan = await userSubscriptionEntity.getConnectionsAddedAndAllowed(_id);
+                
+                if(!hostSubscriptionPlan || !guestSubscriptionPlan){
+                    throw STATUS_MSG.ERROR.BAD_REQUEST("Subscription plan missing");
+                }
+                const {selected: noOfSelectedUsersGuest, allowed: noOfAllowedUsersGuest} = guestSubscriptionPlan;
+                const {selected: noOfSelectedUsersHost, allowed: noOfAllowedUsersHost} = guestSubscriptionPlan;
+                if(noOfAllowedUsersGuest <= noOfSelectedUsersGuest || noOfAllowedUsersHost <= noOfSelectedUsersHost){
                     throw STATUS_MSG.ERROR.BAD_REQUEST("Max limit reached");
                 }
                 
@@ -387,9 +389,9 @@ export default class UserController{
                 await userSubscriptionEntity.incrementNumberOfUsersAdded(_id);
                 await userSubscriptionEntity.incrementNumberOfUsersAdded(user.id)
                 res.status(201).send(coachAthlete);
-                
 
             }catch(err){
+                console.log(err);
                 logger.error(err);
                 errorHandler(err, res);
             }
@@ -400,10 +402,10 @@ export default class UserController{
                 const {_id: user, userType} = <sessionDetail> req.user;
                 let connection;
                 if(userType){// user is athlete
-                    connection = await coachAthleteEntity.getAllCoach(user);
+                    connection = await coachAthleteEntity.getAllConnectedUsers(user, 'athlete');
 
                 }else{ // user is coach
-                    connection = await coachAthleteEntity.getAllAthlete(user); // get all athlete from here.
+                    connection = await coachAthleteEntity.getAllConnectedUsers(user, 'coach'); // get all athlete from here.
                 }
                 console.log(connection);
                 res.send(connection);
