@@ -4,6 +4,7 @@ import UserController from "../../controller/v1/user.controller";
 import validator from "../../middleware/validator.middleware";
 import session from "../../middleware/session.middleware";
 import {USERTYPE} from "../../constants"
+import updateSanitize from "../../middleware/update.middleware";
 
 const userRoute = Router();
 /**
@@ -812,6 +813,49 @@ userRoute.patch("/uploadPicture",
 
 /**
  * @swagger
+ * /api/user/v1/updateProfile:
+ *   patch:
+ *      summary: Update user profile.
+ *      tags: [User]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                DOB:
+ *                  type: string
+ *                  required: true
+ *                  example: 11/12/2000
+ *      security:
+ *        - bearerAuth: []
+ *        - device-id: []
+ *                
+ *      responses:
+ *        201:
+ *          description: Date of birth added
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          
+ * 
+ *        401:
+ *          description: Unauthorized
+ *          
+ */
+userRoute.patch("/updateProfile",
+    session([USERTYPE.ATHLETE, USERTYPE.COACH]),
+    updateSanitize,
+    UserController.updateProfile
+)
+
+/**
+ * @swagger
  * /api/user/v1/add:
  *   post:
  *      summary: Connect a user with another.
@@ -912,6 +956,51 @@ userRoute.post("/add",
 userRoute.get("/connection",
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.getConncetions
+)
+
+/**
+ * @swagger
+ * /api/user/v1/logout:
+ *   delete:
+ *      summary: Logout a user.
+ *      tags: [User]
+ *      
+ *      security:
+ *        - bearerAuth: []
+ *        - device-id: []      
+ *                  
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+userRoute.delete("/logout",
+    session([USERTYPE.ATHLETE, USERTYPE.COACH]),
+    UserController.logout
 )
 
 export default userRoute ;

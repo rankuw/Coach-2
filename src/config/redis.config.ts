@@ -24,7 +24,12 @@ class redisDAO {
     async setSession(user_id: string, payLoad: any){
         const appendRedisHash = util.promisify(this.client.HSET).bind(this.client);
         logger.info(JSON.stringify(payLoad));
-        return await appendRedisHash(this.Session, user_id, JSON.stringify(payLoad));
+        await appendRedisHash(this.Session, user_id, JSON.stringify(payLoad));
+    }
+
+    async unsetSession(user_id:string){
+        const remove = util.promisify(this.client.HDEL).bind(this.client);
+        await remove(this.Session, user_id);
     }
     
     async createSession(user_id: string, payLoad: any){
@@ -47,6 +52,27 @@ class redisDAO {
             logger.error(err);
             return Promise.reject(err.message);
         }
+    }
+
+    async removeSession(user_id: string, deviceId: string){
+        const prevSession = await this.findSession(user_id);
+        let index = -1;
+        for(let i = 0; i < prevSession.length; i++){
+            if(prevSession[i]?.deviceId === deviceId){
+                index = i;
+                break;
+            }
+        }
+        if(index === -1){
+            return;
+        }
+        prevSession.splice(index,1);
+        if(prevSession.length === 0){
+            this.unsetSession(user_id);
+        }else{
+            this.setSession(user_id, prevSession);
+        }
+        
     }
 }
 export const redis = new redisDAO();

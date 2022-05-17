@@ -24,6 +24,7 @@ export class SessionEntity{
     static async checkSession(userId: string, deviceId: string, userType: USERTYPE[]): Promise<boolean>{
         try{
             const session_user = await redis.findSession(userId);
+            
             if(session_user.length === 0){
                 //check in mongodb;
                 const mongo_session = <sessionInterface>await SessionModel.findOne({userId, deviceId, isActive: true, isLoggedIn: true});
@@ -43,6 +44,16 @@ export class SessionEntity{
             }
         }catch(err: any){
             logger.info(err);
+            return Promise.reject(err);
+        }
+    }
+
+    static async deleteSession(userId: string, deviceId: string){
+        try{
+            redis.removeSession(userId, deviceId);
+            await SessionModel.findOneAndUpdate({userId, deviceId}, {isLoggedIn: false, isActive: false});
+        }catch(err){
+            logger.error(err);
             return Promise.reject(err);
         }
     }

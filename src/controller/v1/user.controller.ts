@@ -240,7 +240,7 @@ export default class UserController{
                 if(!user){
                     throw STATUS_MSG.ERROR.FORBIDDEN("User not found");
                 }else{
-                    throw STATUS_MSG.SUCCESS.PROFILE_UPDATED
+                    res.status(201).json(STATUS_MSG.SUCCESS.PROFILE_UPDATED);
                 }
             }catch(err: any){
                 logger.error(err);
@@ -340,7 +340,7 @@ export default class UserController{
                                 throw STATUS_MSG.DATA_RESPONSE(400, false, "Image not provided", {});
                             }
                             const _id: string = <string>req.user;
-                            const url: string = `${HOST}:${PORT}/${req.file?.path}`;
+                            const url: string = `${HOST}/${req.file?.path}`;
                             const user = await UserEntity.updateUser({_id}, {profilePicUrl: url});
                             if(!user){
                                 throw STATUS_MSG.DATA_RESPONSE(404, false, "User not found", {});
@@ -397,7 +397,6 @@ export default class UserController{
                 res.status(201).send(coachAthlete);
 
             }catch(err){
-                console.log(err);
                 logger.error(err);
                 errorHandler(err, res);
             }
@@ -406,15 +405,38 @@ export default class UserController{
         static async getConncetions(req: Request, res: Response){
             try{
                 const {_id: user, userType} = <sessionDetail> req.user;
-                let connection;
+                let connections;
                 if(userType){// user is athlete
-                    connection = await coachAthleteEntity.getAllConnectedUsers(user, 'athlete');
+                    connections = await coachAthleteEntity.getAllConnectedUsers(user, 'athlete');
 
                 }else{ // user is coach
-                    connection = await coachAthleteEntity.getAllConnectedUsers(user, 'coach');
+                    connections = await coachAthleteEntity.getAllConnectedUsers(user, 'coach');
                 }
-                console.log(connection);
-                res.send(connection);
+                console.log(connections);
+                res.status(200).json(STATUS_MSG.DATA_RESPONSE(201, true, "Fetch request successfull", {connections}));
+            }catch(err){
+                logger.error(err);
+                errorHandler(err, res);
+            }
+        }
+
+        static async updateProfile(req: Request, res: Response){
+            try{
+                const {_id} = <sessionDetail> req.user;
+                const user = <userInterface|null> await UserEntity.updateUser({_id}, req.body);
+                res.status(201).json(STATUS_MSG.SUCCESS.PROFILE_UPDATED);
+            }catch(err){
+                logger.error(err);
+                errorHandler(err, res);
+            }
+        }
+
+        static async logout(req: Request, res: Response){
+            const {_id} = <sessionDetail> req.user;
+            const deviceId = <string> req.headers["device-id"];
+            try{
+                await SessionEntity.deleteSession(_id, deviceId);
+                res.status(201).json(STATUS_MSG.SUCCESS.DELETED);
             }catch(err){
                 logger.error(err);
                 errorHandler(err, res);
