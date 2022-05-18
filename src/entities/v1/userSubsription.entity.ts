@@ -72,6 +72,20 @@ class UserSubscriptionEntity<T> extends Base<T>{
         }
 
     }
+
+    getLvl = async (id: string) => {
+        try{
+            const usersub: any = await this.getValue({userId: id});
+            console.log(usersub);
+            const a = await usersub.populate({path: "subscriptionId", select: "subscriptionId"})
+            const b =  await a.populate({path: "subscriptionId.subscriptionId"});
+            return b.subscriptionId.subscriptionId.level;
+        }catch(err){
+            console.log(err);
+            return Promise.reject(err);
+        }
+       
+    }
 }
 
 export const userSubscriptionEntity = new UserSubscriptionEntity<userSubscriptionInterface>();

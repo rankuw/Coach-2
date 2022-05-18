@@ -59,6 +59,33 @@ class UserWorkoutEntity<T> extends Base<T>{
         
         return workout.workout.coach;
     }
+
+    async getCompletedStats(athlete: string){
+        
+        try{
+            const stats = await this.getModel().aggregate([
+                {$match: {athlete : new Types.ObjectId(athlete), status: 1}},
+                {$project: {workout: 1}},
+                {$lookup: {
+                    from: 'workouts',
+                    localField: 'workout',
+                    foreignField: '_id',
+                    as: 'workout'
+                }},
+                {$unwind: '$workout'},
+                {$group: {
+                    _id: '',
+                    "duration": {$sum: "$workout.duration"},
+                    "calories": {$sum: "$workout.calories"},
+                    "total": {$sum: 1}
+                }},
+                // {$project: {durartion: "$duration", calories: "$calories", total: "$total"}}
+            ])
+            return stats[0];
+        }catch(err){
+            console.log(err);
+        }
+    }
 }
 
 export const userWokoutEntity = new UserWorkoutEntity<userWorkoutInterface>();

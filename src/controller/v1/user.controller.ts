@@ -442,6 +442,19 @@ export default class UserController{
                 errorHandler(err, res);
             }
         }
+
+        static async getStats(req: Request, res: Response){
+            const {_id} = <sessionDetail> req.user;
+            try{
+                const stats = await userWokoutEntity.getCompletedStats(_id);
+                const level = await userSubscriptionEntity.getLvl(_id);
+                stats.level = level;
+                res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({stats}));
+            }catch(err){
+                logger.error(err);
+                errorHandler(err, res);
+            }
+        }
 }
 
 

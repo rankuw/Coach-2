@@ -15,7 +15,7 @@ export const subscriptionCostSchema: Schema<subscriptionCostInterface> = new Sch
     subscriptionId: {
         type: Schema.Types.ObjectId,
         require: true,
-        ref: "subscriptions"
+        ref: "Subscription"
     }
 });
 

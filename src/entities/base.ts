@@ -23,9 +23,9 @@ export default class Base<T>{
             return Promise.reject(err);
         }
     }
-    getValue =async (query: any): Promise<T> => {
+    getValue = async(query: any): Promise<T> => {
         try{
-            const doc: T = await this.getModel().findOne(query);
+            const doc = await this.getModel().findOne(query);
             return doc;
         }catch(err){
             return Promise.reject(err);

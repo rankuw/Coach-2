@@ -1003,4 +1003,49 @@ userRoute.delete("/logout",
     UserController.logout
 )
 
+/**
+ * @swagger
+ * /api/user/v1/stats:
+ *   get:
+ *      summary: Get a user's stats.
+ *      tags: [User]
+ *      
+ *      security:
+ *        - bearerAuth: []
+ *        - device-id: []      
+ *                  
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+userRoute.get("/stats",
+    session([USERTYPE.ATHLETE]),
+    UserController.getStats
+)
+
 export default userRoute ;
