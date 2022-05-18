@@ -1,4 +1,5 @@
 import {Types} from "mongoose";
+import { STATUS_MSG } from "../../constants";
 import { userWorkoutInterface, workoutInterface } from "../../interface";
 import { userWorkoutModel } from "../../models/v1/userWorkout.model";
 import Base from "../base";
@@ -81,7 +82,7 @@ class UserWorkoutEntity<T> extends Base<T>{
                 }},
                 // {$project: {durartion: "$duration", calories: "$calories", total: "$total"}}
             ])
-            return stats[0];
+            return stats;
         }catch(err){
             console.log(err);
         }

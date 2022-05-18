@@ -293,6 +293,9 @@ export default class UserController{
             try{
                 const user= <userInterface>await UserEntity.findUserDetails({_id});
                 const level = await userSubscriptionEntity.getLvl(_id);
+                if(!level){
+                    throw STATUS_MSG.ERROR.ACTION_NOT_ALLOWED;
+                }
                 const profile = {
                     _id: user.id,
                     name: user.name,
@@ -309,7 +312,7 @@ export default class UserController{
                 }
             }catch(err: any){
                 logger.error(err);
-                res.send(err.message);
+                errorHandler(err, res);
             }
 
         }
@@ -457,6 +460,9 @@ export default class UserController{
             const {_id} = <sessionDetail> req.user;
             try{
                 const stats = await userWokoutEntity.getCompletedStats(_id);
+                if(stats.length === 0){
+                    throw STATUS_MSG.ERROR.ACTION_NOT_ALLOWED;
+                }
                 delete stats._id;
                 res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({stats}));
             }catch(err){
