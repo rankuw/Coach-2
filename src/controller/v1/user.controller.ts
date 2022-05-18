@@ -273,7 +273,7 @@ export default class UserController{
                         const sessionId = await SessionEntity.createSession(user.id, deviceId, user.userType);
                         const token: string = "Bearer " + createToken({_id: user.id, sessionId, userType: user.userType}, 600 * 600);
                         console.log(user);
-                        res.status(201).json(STATUS_MSG.DATA_RESPONSE(201, true, "user logger in", {user, token}));
+                        res.status(201).json(STATUS_MSG.DATA_RESPONSE(201, true, "user logger in", {type: user.userType, token}));
                     }else{
                         res.status(401).json(STATUS_MSG.DATA_RESPONSE(401, false, "wrong credentials", {}));
                     }
