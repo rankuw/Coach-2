@@ -137,6 +137,12 @@ class Validator{
         }),
         this.checkValidation
     ]
+
+    addConncection = [
+        this.validatePhone[0],
+        this.validateEmail[0],
+        ...this.validateSession
+    ]
     
     // ! tododododododododododododo.
     assignWorkout = [

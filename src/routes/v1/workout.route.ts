@@ -1,11 +1,11 @@
 import { Router} from "express";
 import WorkoutController from "../../controller/v1/workout.controller";
-import UserController from "../../controller/v1/user.controller";
 import validator from "../../middleware/validator.middleware";
 import session from "../../middleware/session.middleware";
 import {USERTYPE} from "../../constants"
 
 const workoutRoute = Router();
+
 /**
  * @swagger
  * components:
@@ -216,7 +216,6 @@ const workoutRoute = Router();
     session([USERTYPE.COACH]),
     WorkoutController.addWorkout
 )
-
 
 /**
  * @swagger

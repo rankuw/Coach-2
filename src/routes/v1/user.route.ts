@@ -559,7 +559,6 @@ userRoute.post("/forgotPassword/phone/verify",
  *                $ref: '#/components/schemas/Result'
  */
 userRoute.post("/forgotPassword/email",
-    validator.validateEmail,
     validator.validateEmailPassword,
     UserController.newPasswordEmail
 );
@@ -909,6 +908,7 @@ userRoute.patch("/updateProfile",
  *                $ref: '#/components/schemas/Result'
  */
 userRoute.post("/add",
+    validator.addConncection,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.addUser
 )
@@ -954,6 +954,7 @@ userRoute.post("/add",
  *                $ref: '#/components/schemas/Result'
  */
 userRoute.get("/connection",
+    validator.validateSession,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.getConncetions
 )
@@ -999,6 +1000,7 @@ userRoute.get("/connection",
  *                $ref: '#/components/schemas/Result'
  */
 userRoute.delete("/logout",
+    validator.validateSession,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     UserController.logout
 )
@@ -1044,6 +1046,7 @@ userRoute.delete("/logout",
  *                $ref: '#/components/schemas/Result'
  */
 userRoute.get("/stats",
+    validator.validateSession,
     session([USERTYPE.ATHLETE]),
     UserController.getStats
 )

@@ -1,4 +1,4 @@
-import multer, { diskStorage, FileFilterCallback } from "multer";
+import multer, { diskStorage} from "multer";
 import {Request} from "express"
 const storage = diskStorage({
     destination: "./pictures",

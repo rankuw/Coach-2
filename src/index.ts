@@ -22,8 +22,6 @@ app.use(morgan('dev'));
 app.use("/pictures",express.static("pictures"))
 
 app.use("/api-docs", serve, setup(swaggerFunction())) //path for swagger api doc
-// app.use("/api/athlete/v1", athleteRouter); // athlete routes.
-// app.use("/api/coach/v1", coachRouter); // coach route
 app.use("/api/user/v1", userRoute, subscriptionRoute, exerciseRoute, workoutRoute);
 app.use("/api/admin/v1", adminRoute);
 

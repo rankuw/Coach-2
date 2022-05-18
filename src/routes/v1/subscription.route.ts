@@ -45,7 +45,6 @@ const subscriptionRoute = Route();
  *       bearerFormat: JWT
  *   
  */
-
 /**
  * @swagger
  * tags:

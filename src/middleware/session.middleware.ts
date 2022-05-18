@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { USERTYPE } from "../constants";
-import * as jwt from "jsonwebtoken";
 import { STATUS_MSG } from "../constants/app.constants";
-import { JWT_SECRET } from "../constants";
 import {SessionEntity} from "../entities/";
 import Logger from "../logger";
 import { errorHandler, extractToken } from "../utils";

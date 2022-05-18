@@ -34,7 +34,6 @@ const exerciseRoute = Router();
  *     
  *   
  */
-
 /**
  * @swagger
  * tags:
