@@ -77,6 +77,9 @@ class UserSubscriptionEntity<T> extends Base<T>{
         try{
             const usersub: any = await this.getValue({userId: id});
             console.log(usersub);
+            if(!usersub){
+                throw STATUS_MSG.ERROR.CUSTOM_ERROR(402, "user has no subscription plan");
+            }
             const a = await usersub.populate({path: "subscriptionId", select: "subscriptionId"})
             const b =  await a.populate({path: "subscriptionId.subscriptionId"});
             return b.subscriptionId.subscriptionId.level;

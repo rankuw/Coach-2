@@ -291,9 +291,19 @@ export default class UserController{
         static async getUserDetails(req: Request, res: Response){
             const {_id} = <sessionDetail>req.user;
             try{
-                const user = await UserEntity.findUserDetails({_id});
+                const user= <userInterface>await UserEntity.findUserDetails({_id});
+                const level = await userSubscriptionEntity.getLvl(_id);
+                const profile = {
+                    _id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    phoneNumber: user.phoneNumber,
+                    DOB: user.DOB,
+                    profilePicUrl: user.profilePicUrl,
+                    level
+                }
                 if(user){
-                    res.status(200).json(STATUS_MSG.SUCCESS.CUSTOM_CONTENT(200, {user}));
+                    res.status(200).json(STATUS_MSG.SUCCESS.CUSTOM_CONTENT(200, {profile}));
                 }else{
                     res.send("not found");
                 }
@@ -447,8 +457,7 @@ export default class UserController{
             const {_id} = <sessionDetail> req.user;
             try{
                 const stats = await userWokoutEntity.getCompletedStats(_id);
-                const level = await userSubscriptionEntity.getLvl(_id);
-                stats.level = level;
+                delete stats._id;
                 res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({stats}));
             }catch(err){
                 logger.error(err);
