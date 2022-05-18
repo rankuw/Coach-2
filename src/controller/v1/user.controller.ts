@@ -293,8 +293,9 @@ export default class UserController{
             try{
                 const user= <userInterface>await UserEntity.findUserDetails({_id});
                 const level = await userSubscriptionEntity.getLvl(_id);
-                if(!level){
-                    throw STATUS_MSG.ERROR.ACTION_NOT_ALLOWED;
+                let connectedUsers = null;
+                if(level){
+                    connectedUsers = await userSubscriptionEntity.getConnectionsAddedAndAllowed(_id);
                 }
                 const profile = {
                     _id: user.id,
@@ -303,7 +304,8 @@ export default class UserController{
                     phoneNumber: user.phoneNumber,
                     DOB: user.DOB,
                     profilePicUrl: user.profilePicUrl,
-                    level
+                    level,
+                    connectedUsers
                 }
                 if(user){
                     res.status(200).json(STATUS_MSG.SUCCESS.CUSTOM_CONTENT(200, {profile}));
