@@ -297,6 +297,103 @@ workoutRoute.post("/workout/assign",
 
 /**
  * @swagger
+ * /api/user/v1/workout:
+ *   get:
+ *      summary: get all workouts assigned on a particular date.
+ *      tags: [Workout]
+ *      parameters:
+ *        - in: query
+ *          name: date
+ *          schema:
+ *            type: string
+ *          description: The date to query exercise.        
+ *      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+ workoutRoute.get("/workout", 
+    validator.validateDate,
+    session([USERTYPE.ATHLETE]),
+    WorkoutController.getWorkouts
+)
+
+/**
+ * @swagger
+ * /api/user/v1/workout/all:
+ *   get:
+ *      summary: get all workouts assigned on a particular date.
+ *      tags: [Workout]      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+workoutRoute.get("/workout/all",
+    validator.validateSession,
+    session([USERTYPE.ATHLETE]),
+    WorkoutController.getAllWorkouts
+)
+
+/**
+ * @swagger
  * /api/user/v1/workout/{coach}:
  *   get:
  *      summary: Get workouts created by a particular coach on a paricular date
@@ -347,62 +444,10 @@ workoutRoute.post("/workout/assign",
  *              schema:
  *                $ref: '#/components/schemas/Result'
  */
-workoutRoute.get("/workout/:coach",
+ workoutRoute.get("/workout/:coach",
     validator.validateDateCoach,
     session([USERTYPE.ATHLETE]),
     WorkoutController.getWorkoutsByCoach
-)
-
-/**
- * @swagger
- * /api/user/v1/workout:
- *   get:
- *      summary: get all workouts assigned on a particular date.
- *      tags: [Workout]
- *      parameters:
- *        - in: query
- *          name: date
- *          schema:
- *            type: string
- *          description: The date to query exercise.        
- *      
- *      
- *      security:
- *        - device-id: []
- *        - bearerAuth: []         
- *      responses:
- *        201:
- *          description: User profile created and email sent for verification
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- *             
- *        500:
- *          description: Some server error
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- * 
- *        409:
- *          description: User exists
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- * 
- *        400:
- *          description: Missing fields
- *          content: 
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- */
- workoutRoute.get("/workout", 
-    validator.validateDate,
-    session([USERTYPE.ATHLETE]),
-    WorkoutController.getWorkouts
 )
 
 /**

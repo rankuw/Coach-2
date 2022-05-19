@@ -186,8 +186,8 @@ class Validator{
     ]
 
     finishExercises = [
-        body("exercise").exists().withMessage("Exercise array missing").bail(),
-        body("workout").exists().withMessage("workout id is missing").isString().withMessage("workout id is missing").bail(),
+        body("exercises").exists().withMessage("Exercise array missing").bail().isArray({min: 1}).withMessage("exercise id's should be inside an array").bail(),
+        body("userWorkoutId").exists().withMessage("workout id is missing").isString().withMessage("workout id is missing").bail(),
         ...this.validateSession
     ]
 
@@ -195,6 +195,8 @@ class Validator{
         param("exercise").exists().withMessage("exercise title missing").bail(),
         this.checkValidation
     ]
+
+
 }
 
 const validator = new Validator();

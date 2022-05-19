@@ -129,4 +129,14 @@ export default class WorkoutController{
             errorHandler(err, res);
         }
     }
+
+    static async getAllWorkouts(req: Request, res: Response){
+        const {_id} = <sessionDetail> req.user;
+        try{
+            const workouts = await userWokoutEntity.getAllWorkouts(_id);
+            res.status(201).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS(workouts));
+        }catch(err){
+            errorHandler(err, res);
+        }
+    }
 }

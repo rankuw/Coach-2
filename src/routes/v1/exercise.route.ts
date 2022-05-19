@@ -197,6 +197,7 @@ const exerciseRoute = Router();
  *          
  */
 exerciseRoute.patch("/exercise/finish/multiple",
+   validator.finishExercises,
    session([USERTYPE.ATHLETE]),
    ExerciseController.finishMultipleExercise
 )

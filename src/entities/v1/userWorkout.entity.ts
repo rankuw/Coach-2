@@ -70,7 +70,7 @@ class UserWorkoutEntity<T> extends Base<T>{
         return workouts;
     }
 
-    async getCoachId(_id: string){
+    async getCoachId(_id: string|Types.ObjectId){
         const doc = await this.getModel().findOne({workout: _id});
         console.log(doc)
         const workout = await doc.populate({path: 'workout', select: "coach -_id"});
@@ -103,7 +103,31 @@ class UserWorkoutEntity<T> extends Base<T>{
             return stats;
         }catch(err){
             console.log(err);
+            return Promise.reject(err);
         }
+    }
+
+    async getAllWorkouts(athlete: string|Types.ObjectId){
+        athlete = new Types.ObjectId(athlete);
+        const workouts = await this.getModel().aggregate([
+            {$match: {athlete}},
+            {$lookup: {
+                from: 'workouts',
+                localField: "workout",
+                foreignField: '_id',
+                as: 'workout'
+            }},
+            {$unwind: "$workout"},
+            {$lookup: {
+                from: 'users',
+                localField: 'workout.coach',
+                foreignField: '_id',
+                as: 'workout.coach'
+            }},
+            {$unwind: "$workout.coach"},
+            {$project: {"workout.__v": 0, "__v": 0, "workout.coach.__v": 0, "workout.coach.userType": 0, "workout.coach.active": 0, "workout.coach.password": 0, "workout.coach.createdAt": 0, "workout.coach.updatedAt": 0, "workout.coach.emailVerified": 0, "workout.coach.phoneVerified": 0}}
+        ]);
+        return workouts;
     }
 }
 

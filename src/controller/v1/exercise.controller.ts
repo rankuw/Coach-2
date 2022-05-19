@@ -78,15 +78,15 @@ export default class ExerciseController{
 
     static async finishMultipleExercise(req: Request, res: Response){
         const {_id: athlete} = <sessionDetail>req.user;
-        const {exercises, workout} = req.body;
+        const {exercises, userWorkoutId} = req.body;
         try{
-            const userWorkout = await userWokoutEntity.getValue({workout, athlete});
+            const userWorkout = await userWokoutEntity.getValue({_id: userWorkoutId, athlete});
             console.log(userWorkout)
             if(userWorkout){
-                const result = await userExerciseEntity.markCompleteMultiple({user: userWorkout._id, exercises});
-                const unfinshedExercise: userExerciseInterface[] = await userExerciseEntity.getValues({user: workout, isCompleted: false});
+                const result = await userExerciseEntity.markCompleteMultiple({user: userWorkoutId, exercises});
+                const unfinshedExercise: userExerciseInterface[] = await userExerciseEntity.getValues({user: userWorkoutId, isCompleted: false});
                 if(unfinshedExercise.length < 1){
-                    const coach = await userWokoutEntity.getCoachId(workout);
+                    const coach = await userWokoutEntity.getCoachId(userWorkout.workout);
                     await coachAthleteEntity.increaseFinishedExercises(coach, athlete);
                     await userWokoutEntity.update({_id: userWorkout._id}, {status: 1});
                 }
