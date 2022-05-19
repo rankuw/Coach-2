@@ -290,7 +290,7 @@ const workoutRoute = Router();
  *                $ref: '#/components/schemas/Result'
  */
 workoutRoute.post("/workout/assign",
-    validator.validateSession,
+    validator.assignWorkout,
     session([USERTYPE.COACH]),
     WorkoutController.assignWorkout
 )
@@ -302,7 +302,7 @@ workoutRoute.post("/workout/assign",
  *      summary: Get workouts created by a particular coach on a paricular date
  *      tags: [Workout]
  *      parameters:
- *        - in: query
+ *        - in: path
  *          name: coach
  *          schema:
  *            type: string
@@ -348,9 +348,61 @@ workoutRoute.post("/workout/assign",
  *                $ref: '#/components/schemas/Result'
  */
 workoutRoute.get("/workout/:coach",
-    validator.validateSession,
+    validator.validateDateCoach,
     session([USERTYPE.ATHLETE]),
     WorkoutController.getWorkoutsByCoach
+)
+
+/**
+ * @swagger
+ * /api/user/v1/workout:
+ *   get:
+ *      summary: get all workouts assigned on a particular date.
+ *      tags: [Workout]
+ *      parameters:
+ *        - in: query
+ *          name: date
+ *          schema:
+ *            type: string
+ *          description: The date to query exercise.        
+ *      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+ workoutRoute.get("/workout", 
+    validator.validateDate,
+    session([USERTYPE.ATHLETE]),
+    WorkoutController.getWorkouts
 )
 
 /**
@@ -400,61 +452,9 @@ workoutRoute.get("/workout/:coach",
  *                $ref: '#/components/schemas/Result'
  */
  workoutRoute.get("/workout/search/:title",
-    validator.validateSession,
+    validator.queryWorkout,
     session([USERTYPE.COACH]),
     WorkoutController.queryWorkouts
-)
-
-/**
- * @swagger
- * /api/user/v1/workout:
- *   get:
- *      summary: get all workouts assigned on a particular date.
- *      tags: [Workout]
- *      parameters:
- *        - in: query
- *          name: date
- *          schema:
- *            type: string
- *          description: The date to query exercise.        
- *      
- *      
- *      security:
- *        - device-id: []
- *        - bearerAuth: []         
- *      responses:
- *        201:
- *          description: User profile created and email sent for verification
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- *             
- *        500:
- *          description: Some server error
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- * 
- *        409:
- *          description: User exists
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- * 
- *        400:
- *          description: Missing fields
- *          content: 
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- */
-workoutRoute.get("/workout", 
-    validator.validateSession,
-    session([USERTYPE.ATHLETE]),
-    WorkoutController.getWorkouts
 )
 
 /**
@@ -503,7 +503,7 @@ workoutRoute.get("/workout",
  *                $ref: '#/components/schemas/Result'
  */
 workoutRoute.delete("/workout/remove/:workout",
-    validator.validateSession,
+    validator.removeWorkout,
     session([USERTYPE.COACH]),
     WorkoutController.removeWorkout
 )

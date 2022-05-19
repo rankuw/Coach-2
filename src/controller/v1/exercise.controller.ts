@@ -49,46 +49,46 @@ export default class ExerciseController{
         }
     }
 
-    static async finishExercise(req: Request, res: Response){
-        const {_id: athlete} = <sessionDetail>req.user;
-        const {exercise, userWorkoutId} = req.body;
-        try{
-            const userWorkout = await userWokoutEntity.getValue({_id: userWorkoutId, athlete});
+    // static async finishExercise(req: Request, res: Response){
+    //     const {_id: athlete} = <sessionDetail>req.user;
+    //     const {exercise, workout} = req.body;
+    //     try{
+    //         const userWorkout = await userWokoutEntity.getValue({_id: workout, athlete});
             
-            if(userWorkout){
-                const result = await userExerciseEntity.markComplete({user: userWorkoutId, exercise});
-                const unfinshedExercise: userExerciseInterface[] = await userExerciseEntity.getValues({user: userWorkoutId, isCompleted: false});
-                if(unfinshedExercise.length < 1){
-                    const coach = await userWokoutEntity.getCoachId(userWorkoutId);
-                    await coachAthleteEntity.increaseFinishedExercises(coach, athlete);
-                    await userWokoutEntity.update({_id: userWorkoutId}, {status: 1});
-                }
-                res.status(201).json(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, "exercise status", {"finished": unfinshedExercise.length < 1}));
+    //         if(userWorkout){
+    //             const result = await userExerciseEntity.markComplete({user: workout, exercise});
+    //             const unfinshedExercise: userExerciseInterface[] = await userExerciseEntity.getValues({user: workout, isCompleted: false});
+    //             if(unfinshedExercise.length < 1){
+    //                 const coach = await userWokoutEntity.getCoachId(workout);
+    //                 await coachAthleteEntity.increaseFinishedExercises(coach, athlete);
+    //                 await userWokoutEntity.update({_id: workout}, {status: 1});
+    //             }
+    //             res.status(201).json(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, "exercise status", {"finished": unfinshedExercise.length < 1}));
                 
-            }
-            else{
-                throw STATUS_MSG.ERROR.BAD_REQUEST("incorrect user or workout");
-            }
+    //         }
+    //         else{
+    //             throw STATUS_MSG.ERROR.BAD_REQUEST("incorrect user or workout");
+    //         }
 
             
-        }catch(err){
-            errorHandler(err, res);
-        }
-    }
+    //     }catch(err){
+    //         errorHandler(err, res);
+    //     }
+    // }
 
     static async finishMultipleExercise(req: Request, res: Response){
         const {_id: athlete} = <sessionDetail>req.user;
-        const {exercises, userWorkoutId} = req.body;
+        const {exercises, workout} = req.body;
         try{
-            const userWorkout = await userWokoutEntity.getValue({_id: userWorkoutId, athlete});
-            
+            const userWorkout = await userWokoutEntity.getValue({workout, athlete});
+            console.log(userWorkout)
             if(userWorkout){
-                const result = await userExerciseEntity.markCompleteMultiple({user: userWorkoutId, exercises});
-                const unfinshedExercise: userExerciseInterface[] = await userExerciseEntity.getValues({user: userWorkoutId, isCompleted: false});
+                const result = await userExerciseEntity.markCompleteMultiple({user: userWorkout._id, exercises});
+                const unfinshedExercise: userExerciseInterface[] = await userExerciseEntity.getValues({user: workout, isCompleted: false});
                 if(unfinshedExercise.length < 1){
-                    const coach = await userWokoutEntity.getCoachId(userWorkoutId);
+                    const coach = await userWokoutEntity.getCoachId(workout);
                     await coachAthleteEntity.increaseFinishedExercises(coach, athlete);
-                    await userWokoutEntity.update({_id: userWorkoutId}, {status: 1});
+                    await userWokoutEntity.update({_id: userWorkout._id}, {status: 1});
                 }
                 res.status(201).json(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, "exercise status", {"finished": unfinshedExercise.length < 1}));
                 

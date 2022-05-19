@@ -3,6 +3,7 @@ import { USERTYPE } from "../../constants";
 import AdminController from "../../controller/v1/admin.controller";
 import ExerciseController from "../../controller/v1/exercise.controller";
 import session from "../../middleware/session.middleware";
+import validator from "../../middleware/validator.middleware";
 const exerciseRoute = Router();
 
 
@@ -42,32 +43,6 @@ const exerciseRoute = Router();
  *     description: Routes for adding and querying exercises.
  */
 
-/**
- * @swagger
- * /api/user/v1/exercise:
- *   get:
- *      summary: Get all exercies in a database.
- *      tags: [Exercise]
- *                
- *      responses:
- *        200:
- *          description: Subscription plans returned.
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Result'
- *             
- *        500:
- *          description: Some server error
- *          
- * 
- *        401:
- *          description: Unauthorized
- *          
- */
- exerciseRoute.get("/exercise",
-   ExerciseController.getExercises
- )
 
  /**
  * @swagger
@@ -98,33 +73,16 @@ const exerciseRoute = Router();
  *          
  */
   exerciseRoute.get("/exercise/:difficulty",
+  validator.exerciseDifficulty,
   ExerciseController.getExercise
 )
 
 /**
  * @swagger
- * /api/user/v1/exercise/finish/one:
- *   patch:
- *      summary: mark a exercise finished..
+ * /api/user/v1/exercise:
+ *   get:
+ *      summary: Get all exercies in a database.
  *      tags: [Exercise]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                exercise:
- *                  type: string
- *                  required: true
- *                  example: 627ba2cc881471e411e28ad2
- *                userWorkoutId:
- *                  type: string
- *                  required: true
- *                  example: 62823dd24124b408fa8c8421
- *      security:
- *        - device-id: []
- *        - bearerAuth: []
  *                
  *      responses:
  *        200:
@@ -142,10 +100,56 @@ const exerciseRoute = Router();
  *          description: Unauthorized
  *          
  */
- exerciseRoute.patch("/exercise/finish/one",
-   session([USERTYPE.ATHLETE]),
-   ExerciseController.finishExercise
-)
+ exerciseRoute.get("/exercise",
+   ExerciseController.getExercises
+ )
+
+// /**
+//  * @swagger
+//  * /api/user/v1/exercise/finish/one:
+//  *   patch:
+//  *      summary: mark a exercise finished..
+//  *      tags: [Exercise]
+//  *      requestBody:
+//  *        required: true
+//  *        content:
+//  *          application/json:
+//  *            schema:
+//  *              type: object
+//  *              properties:
+//  *                exercises:
+//  *                  type: string
+//  *                  required: true
+//  *                  example: 627ba2cc881471e411e28ad2
+//  *                workout:
+//  *                  type: string
+//  *                  required: true
+//  *                  example: 62823dd24124b408fa8c8421
+//  *      security:
+//  *        - device-id: []
+//  *        - bearerAuth: []
+//  *                
+//  *      responses:
+//  *        200:
+//  *          description: Subscription plans returned.
+//  *          content:
+//  *            application/json:
+//  *              schema:
+//  *                $ref: '#/components/schemas/Result'
+//  *             
+//  *        500:
+//  *          description: Some server error
+//  *          
+//  * 
+//  *        401:
+//  *          description: Unauthorized
+//  *          
+//  */
+//  exerciseRoute.patch("/exercise/finish/one",
+//    validator.finishOneExercise,
+//    session([USERTYPE.ATHLETE]),
+//    ExerciseController.finishExercise
+// )
 
 /**
  * @swagger
@@ -239,6 +243,7 @@ exerciseRoute.patch("/exercise/finish/multiple",
  *                $ref: '#/components/schemas/Result'
  */
 exerciseRoute.get("/exercise/query/:exercise",
+   validator.queryExercise,
    ExerciseController.queryExercises
 )
 

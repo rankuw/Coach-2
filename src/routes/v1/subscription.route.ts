@@ -111,6 +111,7 @@ const subscriptionRoute = Route();
  *          
  */
  subscriptionRoute.post("/subscriptionPlan/select/:subscriptionId",
+    validator.subscribe,
     session([USERTYPE.ATHLETE, USERTYPE.COACH]),
     SubscriptionController.addUserSubscription
  )
@@ -142,8 +143,9 @@ const subscriptionRoute = Route();
  *          
  */
  subscriptionRoute.get("/subscriptionDetail",
-    session([USERTYPE.ATHLETE, USERTYPE.COACH]),
-    SubscriptionController.getDetails
+   validator.validateSession,
+   session([USERTYPE.ATHLETE, USERTYPE.COACH]),
+   SubscriptionController.getDetails
  )
 
  export default subscriptionRoute;

@@ -29,6 +29,7 @@ class UserExerciseEntity<T> extends Base<T>{
             },
             {isCompleted: true}
             )
+            console.log(updateStatus);
             return updateStatus;
         }catch(err){
             logger.error(err);

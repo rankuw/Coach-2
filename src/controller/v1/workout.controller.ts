@@ -93,8 +93,7 @@ export default class WorkoutController{
     }
 
     static async getWorkoutsByCoach(req: Request, res: Response){
-        const coach = <string>req.query.coach;
-        console.log(coach);
+        const coach = <string>req.params.coach;
         const date = new Date(<string> req.query.date);
         const {_id: athlete} = <sessionDetail>req.user;
         try{

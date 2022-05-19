@@ -1,4 +1,4 @@
-import {Types} from "mongoose";
+import {Types, HydratedDocument} from "mongoose";
 import { STATUS_MSG } from "../../constants";
 import { userWorkoutInterface, workoutInterface } from "../../interface";
 import { userWorkoutModel } from "../../models/v1/userWorkout.model";
@@ -22,14 +22,23 @@ class UserWorkoutEntity<T> extends Base<T>{
 
     async workoutDetails(payload: any){
         payload.athlete = new Types.ObjectId(payload.athlete);
-        const workouts = await this.getModel().aggregate([
+        const workouts: HydratedDocument<any>[] = await this.getModel().aggregate([
             {$match: payload},
             {$lookup: {
                 from: 'workouts',
                 localField: 'workout',
                 foreignField: '_id',
-                as: 'workouts'
+                as: 'workout'
             }},
+            {$unwind: "$workout"},
+            {$lookup: {
+                from: 'users',
+                localField: 'workout.coach',
+                foreignField: '_id',
+                as: 'workout.coach'
+            }},
+            {$unwind: "$workout.coach"},
+            {$project: {"workout.__v": 0, "__v": 0, "workout.coach.__v": 0, "workout.coach.userType": 0, "workout.coach.active": 0, "workout.coach.password": 0, "workout.coach.createdAt": 0, "workout.coach.updatedAt": 0, "workout.coach.emailVerified": 0, "workout.coach.phoneVerified": 0}},
         ]);
         console.log(workouts)
         return workouts;
@@ -46,15 +55,23 @@ class UserWorkoutEntity<T> extends Base<T>{
                 pipeline: [
                     {$match:{$expr:{ $and: [{$eq: ["$_id","$$id"]}]}, coach}}
                 ],
-                as: 'workouts'
+                as: 'workout'
             }},
-            
+            {$unwind: "$workout"},
+            {$lookup: {
+                from: 'users',
+                localField: 'workout.coach',
+                foreignField: '_id',
+                as: 'workout.coach'
+            }},
+            {$unwind: "$workout.coach"},
+            {$project: {"workout.__v": 0, "__v": 0, "workout.coach.__v": 0, "workout.coach.userType": 0, "workout.coach.active": 0, "workout.coach.password": 0, "workout.coach.createdAt": 0, "workout.coach.updatedAt": 0, "workout.coach.emailVerified": 0, "workout.coach.phoneVerified": 0}}
         ]);
         return workouts;
     }
 
     async getCoachId(_id: string){
-        const doc = await this.getModel().findOne({_id});
+        const doc = await this.getModel().findOne({workout: _id});
         console.log(doc)
         const workout = await doc.populate({path: 'workout', select: "coach -_id"});
         
@@ -82,6 +99,7 @@ class UserWorkoutEntity<T> extends Base<T>{
                 }},
                 // {$project: {durartion: "$duration", calories: "$calories", total: "$total"}}
             ])
+            console.log(stats);
             return stats;
         }catch(err){
             console.log(err);

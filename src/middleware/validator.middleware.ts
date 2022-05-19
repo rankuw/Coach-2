@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import {check, validationResult, query, header, body} from "express-validator";
+import {check, validationResult, query, header, body, param} from "express-validator";
 import { errorHandler } from "../utils";
 import { STATUS_MSG } from "../constants/app.constants";
 import Logger from "../logger";
@@ -146,11 +146,55 @@ class Validator{
     
     // ! tododododododododododododo.
     assignWorkout = [
-        check("athlete").exists().withMessage("athlete id missing").isString().withMessage("invalid id provided").isLength({min: 12, max: 12}).withMessage("Invalid id").bail(),
-        check("workout").exists().withMessage("workout id missing").isString().withMessage("invalid id").isLength({min: 12, max: 12}).withMessage("Invalid id").bail(),
-        
+        check("athlete").exists().withMessage("athlete id missing").isString().withMessage("invalid id provided").bail(),
+        check("workout").exists().withMessage("workout id missing").isString().withMessage("invalid id").bail(),
+        check("startDate").trim().exists().withMessage("Enter a start date").bail().matches(/^([0]?[1-9]|[1][0-2])[\/]([0]?[1-9]|[1|2][0-9]|[3][0|1])[\/]([0-9]{4}|[0-9]{2})$/).withMessage("Not a valid date").bail(),
+        check("repetation").exists().withMessage("Enter number of repetaion").isNumeric().withMessage("Repetation should be numeric").bail(),
+        check("performAt").exists().withMessage("Perform at missing").bail(),
+        ...this.validateSession
+    ]
+
+    validateDate = [
+        query("date").trim().exists().withMessage("Enter a valid date").bail().matches(/^([0]?[1-9]|[1][0-2])[\/]([0]?[1-9]|[1|2][0-9]|[3][0|1])[\/]([0-9]{4}|[0-9]{2})$/).withMessage("Not a valid date").bail(),
+        ...this.validateSession
     ]
     
+    validateDateCoach = [
+        param("coach").exists().withMessage("id of coach missing").bail(),
+        this.validateDate[0],
+        ...this.validateSession
+    ]
+
+    removeWorkout = [
+        param("workout").exists().withMessage("id of workout missing"),
+        ...this.validateSession
+    ]
+
+    queryWorkout = [
+        param("title").exists().withMessage("Title is missing").bail(),
+        ...this.validateSession
+    ]
+
+    subscribe = [
+        param("subscriptionId").exists().withMessage("subscriptoion id missing").bail(),
+        this.checkValidation
+    ]
+
+    exerciseDifficulty = [
+        param("difficulty").exists().withMessage("difficulty missing").isString().withMessage("difficulty should be string").bail(),
+        this.checkValidation
+    ]
+
+    finishExercises = [
+        body("exercise").exists().withMessage("Exercise array missing").bail(),
+        body("workout").exists().withMessage("workout id is missing").isString().withMessage("workout id is missing").bail(),
+        ...this.validateSession
+    ]
+
+    queryExercise = [
+        param("exercise").exists().withMessage("exercise title missing").bail(),
+        this.checkValidation
+    ]
 }
 
 const validator = new Validator();
