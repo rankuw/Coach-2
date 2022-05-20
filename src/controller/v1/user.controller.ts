@@ -220,7 +220,7 @@ export default class UserController{
                     const sessionId = await SessionEntity.createSession(user.id, deviceId, user.userType);
                     const token: string= createToken({_id: user.id, sessionId, userType: user.userType});
                     // const url: string = "Appinventive.CoachApp://app?token" + token;
-                    const url: string = `https://${HOST}/api/v1/forgetPassword/token?token=` + token
+                    const url: string = `https://${HOST}/api/user/v1/forgetPassword/token?token=` + token
                     const emailStatus = await sendEmail(email, url, "Verify your email to reset password"); 
                     res.status(201).send(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, "Password reset link sent"));
                 }
