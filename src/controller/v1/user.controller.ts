@@ -382,6 +382,14 @@ export default class UserController{
                 if(!user){
                     throw STATUS_MSG.ERROR.NOT_EXIST("user");
                 }
+                const coach = userType? user.id: _id;
+                const athlete = userType? _id: user.id;
+
+                const exists = await coachAthleteEntity.getValue({coach, athlete});
+                if(exists){
+                    throw STATUS_MSG.ERROR.USER_EXISTS;
+                }
+                
                 const [guestSubscriptionPlan, hostSubscriptionPlan] = await Promise.all([
                     await userSubscriptionEntity.getConnectionsAddedAndAllowed(user.id),
                     await userSubscriptionEntity.getConnectionsAddedAndAllowed(_id)
@@ -396,13 +404,7 @@ export default class UserController{
                 if(noOfAllowedUsersGuest <= noOfSelectedUsersGuest || noOfAllowedUsersHost <= noOfSelectedUsersHost){
                     throw STATUS_MSG.ERROR.BAD_REQUEST("Max limit reached");
                 }
-                
-                const coach = userType? user.id: _id;
-                const athlete = userType? _id: user.id;
-                const exists = await coachAthleteEntity.getValue({coach, athlete});
-                if(exists){
-                    throw STATUS_MSG.ERROR.USER_EXISTS;
-                }
+            
                 const coachAthlete = await coachAthleteEntity.addValue({coach, athlete });
                 await Promise.all([
                     await userSubscriptionEntity.incrementNumberOfUsersAdded(_id),

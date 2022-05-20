@@ -144,7 +144,6 @@ class Validator{
         ...this.validateSession
     ]
     
-    // ! tododododododododododododo.
     assignWorkout = [
         check("athlete").exists().withMessage("athlete id missing").isString().withMessage("invalid id provided").bail(),
         check("workout").exists().withMessage("workout id missing").isString().withMessage("invalid id").bail(),
