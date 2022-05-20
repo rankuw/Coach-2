@@ -131,7 +131,7 @@ export default class UserController{
         static async resendOtp(req: Request, res: Response){
             const {phoneNumber} = req.body;
             try{
-                const numberExists = <boolean> await UserEntity.userExists({phoneNumber, phoneVerified: false, emailVerified: true});
+                const numberExists = <boolean> await UserEntity.userExists({phoneNumber, emailVerified: true});
                 if(numberExists){
                     // send otp to the user on his phone.
                     const otpStatus = await sendOTP(phoneNumber); 
@@ -220,7 +220,7 @@ export default class UserController{
                     const sessionId = await SessionEntity.createSession(user.id, deviceId, user.userType);
                     const token: string= createToken({_id: user.id, sessionId, userType: user.userType});
                     // const url: string = "Appinventive.CoachApp://app?token" + token;
-                    const url: string = `https://${HOST}/api/user/v1/forgetPassword/token?token=` + token
+                    const url: string = `https://${HOST}/api/user/v1/forgetPassword/email/deeplink?token=` + token
                     const emailStatus = await sendEmail(email, url, "Verify your email to reset password"); 
                     res.status(201).send(STATUS_MSG.SUCCESS.CUSTOM_SUCCESS(201, "Password reset link sent"));
                 }
@@ -230,7 +230,7 @@ export default class UserController{
             }
         }
 
-        static async emailToken(req: Request, res: Response){
+        static async emailDeeplink(req: Request, res: Response){
             const token = <string>req.query.token
             res.redirect("Appinventive.CoachApp://?token"+ token);
         }

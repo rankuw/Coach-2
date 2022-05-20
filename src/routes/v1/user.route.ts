@@ -563,8 +563,9 @@ userRoute.post("/forgotPassword/email",
     UserController.newPasswordEmail
 );
 
-userRoute.get("/forgetPassword/token",
-    UserController.emailToken
+// route to redirect user to the ios app
+userRoute.get("/forgetPassword/email/deeplink",
+    UserController.emailDeeplink
 )
 
 /**
