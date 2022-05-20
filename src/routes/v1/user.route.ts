@@ -563,6 +563,10 @@ userRoute.post("/forgotPassword/email",
     UserController.newPasswordEmail
 );
 
+userRoute.get("/forgotPassword/token",
+    UserController.emailToken
+)
+
 /**
  * @swagger
  * /api/user/v1/updatePassword:
