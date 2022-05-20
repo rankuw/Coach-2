@@ -232,7 +232,7 @@ export default class UserController{
 
         static async emailToken(req: Request, res: Response){
             const token = <string>req.query.token
-            res.redirect("Appinventive.CoachApp://?token"+token);
+            res.redirect("Appinventive.CoachApp://?token"+ token);
         }
 
         // @desc Update user password.

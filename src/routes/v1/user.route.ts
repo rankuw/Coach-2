@@ -563,7 +563,7 @@ userRoute.post("/forgotPassword/email",
     UserController.newPasswordEmail
 );
 
-userRoute.get("/forgotPassword/token",
+userRoute.get("/forgetPassword/token",
     UserController.emailToken
 )
 
