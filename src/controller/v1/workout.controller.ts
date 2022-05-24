@@ -31,7 +31,7 @@ export default class WorkoutController{
                         throw STATUS_MSG.DATA_RESPONSE(400, false, "Image not provided", {});
                     }
                     const {_id: coach} = <sessionDetail>req.user;
-                    const photoURL: string = `${HOST}:${PORT}/${req.file?.path}`;
+                    const photoURL: string = `${HOST}/${req.file?.path}`;
                     const exercises = <string[]>[... new Set(req.body.exercises)];
                     const exercisesCount = exercises.length;
                     const allExercisesCount = await exerciseEntity.exercisesCount(exercises);
@@ -45,6 +45,7 @@ export default class WorkoutController{
                 
                     
                 }catch(err){
+                    res.write(err);
                     logger.error(err);
                     errorHandler(err, res);
                 }
