@@ -46,7 +46,7 @@ export default class WorkoutController{
                     
                 }catch(err){
                     logger.error(err);
-                    res.send(req.body.exercises)
+                    res.send(req.body)
                 }
             })
     }
