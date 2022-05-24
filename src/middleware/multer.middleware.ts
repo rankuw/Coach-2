@@ -9,7 +9,7 @@ const storage = diskStorage({
 
 const fileFilter = (req: Request, file: any, cb: any) => {
     if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg') {
-        cb(null, false);
+        cb(null, true);
     } else {
         cb(null, true);
     }
