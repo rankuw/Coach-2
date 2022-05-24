@@ -45,7 +45,6 @@ export default class WorkoutController{
                 
                     
                 }catch(err){
-                    res.write(err);
                     logger.error(err);
                     errorHandler(err, res);
                 }

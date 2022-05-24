@@ -16,6 +16,6 @@ export function errorHandler(err: any, res: Response){ //err should be in form o
         res.status(500).json(STATUS_MSG.ERROR.CUSTOM_ERROR(500, "Server error could not send otp"))
     }
     else{
-        res.status(err.statusCode || 500).json({statusCode: err.statusCode || 500, success: err.success || false, message: err.message || "Server error", data: {}});
+        res.status(err.statusCode || 500).json({statusCode: err.statusCode || 500, success: err.success || false, message: err || "Server error", data: {}});
     }
 }
