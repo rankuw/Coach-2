@@ -82,12 +82,18 @@ class CoachAthleteEntity<T> extends Base<T>{
     }
 
     async getAllConnectedUsers(userId: string, type: string){
+        let otherType: string;
+        if(type === "coach"){
+            otherType = "athlete"
+        }else{
+            otherType = "coach"
+        }
         try{
             const userConnections = this.getModel().aggregate([
                 {$match: {[type]: new mongoose.Types.ObjectId(userId)}},
                 {$lookup: {
                     from: 'users',
-                    localField: type,
+                    localField: otherType,
                     foreignField: '_id',
                     as: 'user'
                 }},
@@ -99,6 +105,7 @@ class CoachAthleteEntity<T> extends Base<T>{
                             }}},
 
             ])
+            console.log(userConnections);
             return userConnections;
         }catch(err){
             logger.error(err);
