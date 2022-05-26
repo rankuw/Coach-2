@@ -46,7 +46,7 @@ export default class WorkoutController{
                     
                 }catch(err){
                     logger.error(err);
-                    res.send(err)
+                    res.send({...req.body, err});
                 }
             })
     }
@@ -135,6 +135,16 @@ export default class WorkoutController{
         try{
             const workouts = await userWokoutEntity.getAllWorkouts(_id);
             res.status(201).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS(workouts));
+        }catch(err){
+            errorHandler(err, res);
+        }
+    }
+
+    static async getAllWorkoutsByCoach(req: Request, res: Response){
+        const {_id: coach} = <sessionDetail> req.user;
+        try{
+            const workouts = await workoutEntity.getValues({coach});
+            res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS(workouts));
         }catch(err){
             errorHandler(err, res);
         }

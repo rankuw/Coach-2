@@ -351,7 +351,7 @@ workoutRoute.post("/workout/assign",
  * @swagger
  * /api/user/v1/workout/all:
  *   get:
- *      summary: get all workouts assigned on a particular date.
+ *      summary: get all workouts.
  *      tags: [Workout]      
  *      
  *      security:
@@ -390,6 +390,52 @@ workoutRoute.get("/workout/all",
     validator.validateSession,
     session([USERTYPE.ATHLETE]),
     WorkoutController.getAllWorkouts
+)
+
+
+/**
+ * @swagger
+ * /api/user/v1/workout/my:
+ *   get:
+ *      summary: get all workouts created by a coach.
+ *      tags: [Workout]      
+ *      
+ *      security:
+ *        - device-id: []
+ *        - bearerAuth: []         
+ *      responses:
+ *        201:
+ *          description: User profile created and email sent for verification
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ *             
+ *        500:
+ *          description: Some server error
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        409:
+ *          description: User exists
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ * 
+ *        400:
+ *          description: Missing fields
+ *          content: 
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Result'
+ */
+workoutRoute.get("/workout/my",
+    validator.validateSession,
+    session([USERTYPE.COACH]),
+    WorkoutController.getAllWorkoutsByCoach
 )
 
 /**

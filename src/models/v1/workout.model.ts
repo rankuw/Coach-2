@@ -41,11 +41,6 @@ const workoutSchema: Schema<workoutInterface> = new Schema<workoutInterface>({
     }
 })
 
-workoutSchema.pre("save", async function(next){
-    this.duration = ~~this.duration;
-    this.calories = ~~this.calories;
-    next();
-})
 workoutSchema.index({title: "text"})
 const WorkoutModel = model("workout", workoutSchema);
 export default WorkoutModel;

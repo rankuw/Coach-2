@@ -25,7 +25,7 @@ export default class Base<T>{
     }
     getValue = async(query: any): Promise<T> => {
         try{
-            const doc = await this.getModel().findOne(query);
+            const doc: T = await this.getModel().findOne(query);
             return doc;
         }catch(err){
             return Promise.reject(err);
@@ -45,9 +45,9 @@ export default class Base<T>{
         }
     }
 
-    query = async (title: string) => {
+    query = async (title: string): Promise<T[]> => {
         try{
-            const docs = await this.getModel().find({$text: {$search: title}});
+            const docs: T[] = await this.getModel().find({$text: {$search: title}});
             console.log(docs);
             return docs;
         }catch(err){
