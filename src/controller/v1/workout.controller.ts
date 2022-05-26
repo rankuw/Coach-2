@@ -33,7 +33,12 @@ export default class WorkoutController{
                     }
                     const {_id: coach} = <sessionDetail>req.user;
                     const photoURL: string = `${HOST}/${req.file?.path}`;
-                    const exercises = <string[]>[... new Set(req.body.exercises)];
+                    let exercises;
+                    if(typeof req.body.exercises === "string"){
+                        exercises = new Array(req.body.exercises);
+                    }else{
+                        exercises = <string[]>[... new Set(req.body.exercises)];
+                    }
                     const exercisesCount = exercises.length;
                     const allExercisesCount = await exerciseEntity.exercisesCount(exercises);
                     if(allExercisesCount === exercisesCount){
