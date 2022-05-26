@@ -10,7 +10,6 @@ export interface workoutInterface{
     description: string,
     duration: number,
     calories: number,
-    time: string,
     exercises: [Types.ObjectId]
 } 
 

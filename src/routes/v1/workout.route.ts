@@ -156,10 +156,6 @@ const workoutRoute = Router();
  *                  type: number
  *                  description: Calories that this workout will burn.
  *                  required: true
- *                time: 
- *                  type: string
- *                  description: Time when athlete will perform this workout.
- *                  required: true
  *                exercises: 
  *                  type: array
  *                  items:
