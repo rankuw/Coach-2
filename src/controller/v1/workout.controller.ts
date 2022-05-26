@@ -1,3 +1,4 @@
+import {unlinkSync} from "fs"
 import {Request, Response} from "express";
 import { userWokoutEntity } from "../../entities/v1/userWorkout.entity";
 import { userExerciseEntity } from "../../entities/v1/userExercise.entity";
@@ -37,16 +38,18 @@ export default class WorkoutController{
                     const allExercisesCount = await exerciseEntity.exercisesCount(exercises);
                     if(allExercisesCount === exercisesCount){
                         const workout = await workoutEntity.addValue({...req.body, photoURL, coach});
-                        res.status(201).json(workout);
+                        res.status(201).json(STATUS_MSG.DATA_RESPONSE(201, true, "Workout added", {workout: workout.id}));
                     }else{
-                        res.status(400).json(STATUS_MSG.ERROR.BAD_REQUEST("some exercises entered don't exist"));
+                        throw STATUS_MSG.ERROR.BAD_REQUEST("some exercises entered don't exist");
                     }
                 }
-                
                     
                 }catch(err){
+                    if(req.file?.path){
+                        unlinkSync(req.file.path);
+                    }
                     logger.error(err);
-                    res.send({...req.body, err});
+                    errorHandler(err, res);
                 }
             })
     }

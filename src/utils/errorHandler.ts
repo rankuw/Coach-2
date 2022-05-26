@@ -14,8 +14,10 @@ export function errorHandler(err: any, res: Response){ //err should be in form o
         })
     }else if(err.status === 429 || (err.status === 400 && err.code === 60223)){
         res.status(500).json(STATUS_MSG.ERROR.CUSTOM_ERROR(500, "Server error could not send otp"))
+    }else if(err.name && err.name === "CastError"){
+        res.status(400).json(STATUS_MSG.ERROR.BAD_REQUEST("Invlaid object id provided"));
     }
     else{
-        res.status(err.statusCode || 500).json({statusCode: err.statusCode || 500, success: err.success || false, message: err || "Server error", data: {}});
+        res.status(err.statusCode || 500).json({statusCode: err.statusCode || 500, success: err.success || false, message: err.message || "Server error", data: {}});
     }
 }

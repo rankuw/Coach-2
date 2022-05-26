@@ -2,6 +2,7 @@ import { BODY_PART, DIFFICULTY} from "../../constants/";
 import {Types} from "mongoose"
 
 export interface workoutInterface{
+    id: string | Types.ObjectId,
     coach: Types.ObjectId,
     photoURL: string,
     title: string,
