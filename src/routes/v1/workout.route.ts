@@ -246,10 +246,6 @@ const workoutRoute = Router();
  *                  type: string
  *                  required: true
  *                  example: 7:00 AM
- *                Status: 
- *                  type: number
- *                  required: true
- *                  example: 0
  *                  
  *      
  *      
