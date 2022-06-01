@@ -93,7 +93,7 @@ export default class WorkoutController{
             if(workouts.length === 0){
                 throw STATUS_MSG.ERROR.BAD_REQUEST("No exercise");
             }
-            res.status(200).json(workouts);
+            res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS(workouts));
         }catch(err){
             logger.error(err);
             errorHandler(err, res);
@@ -106,7 +106,7 @@ export default class WorkoutController{
         const {_id: athlete} = <sessionDetail>req.user;
         try{
             const workouts = await userWokoutEntity.workoutDetailsCoach({athlete, startDate: date, status: WORKOUT.ONGOING}, coach)
-            res.send(workouts);
+            res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS(workouts));
         }catch(err){
             logger.error(err);
             errorHandler(err, res);
