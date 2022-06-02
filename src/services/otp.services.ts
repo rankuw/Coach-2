@@ -33,7 +33,7 @@ export const verifyOTP = async (phoneNumber: string, code: string): Promise<bool
     try{
         const data: VerificationCheckInstance = await client.verify.services(<string>serviceSID).verificationChecks.create({to: <string>phoneNumber, code: <string>code});
         logger.info(data);
-        return true;
+        return data.valid;
     }catch(err: any){
         logger.error(JSON.stringify(err));
         return false;

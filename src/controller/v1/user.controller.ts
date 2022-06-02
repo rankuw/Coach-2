@@ -186,9 +186,10 @@ export default class UserController{
                     if(user){
                         // verify the otp
                         const optVerified: boolean = await verifyOTP(phoneNumber, code); 
+                        console.log(optVerified);
                         if(!optVerified){
                             // if invalid otp provided.
-                            throw STATUS_MSG.ERROR.INVALID_TOKEN;
+                            throw STATUS_MSG.ERROR.CUSTOM_ERROR(401, "Invlid otp");
                         }else{
                             // if otp is valid now the user will be send session token.
                             const sessionId = await SessionEntity.createSession(user.id, deviceId, user.userType);
