@@ -1,5 +1,4 @@
 import {createLogger, format, transports, Logger} from "winston";
-import winston from "winston/lib/winston/config";
 const {combine, timestamp, printf, colorize, errors} = format
 
 export function buildDevLogger(place: string): Logger{

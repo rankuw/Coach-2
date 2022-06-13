@@ -29,8 +29,8 @@ export default class ExerciseController{
     // @access Private
     static async getExercises(req: Request, res: Response){
         try{
-            const exercises = await exerciseEntity.getValues();
-            res.status(200).json(exercises);
+            const result = await exerciseEntity.getValues();
+            res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({result}));
         }catch(err){
             errorHandler(err, res);
         }
@@ -42,8 +42,8 @@ export default class ExerciseController{
     static async getExercise(req: Request, res: Response){
         try{
             const difficulty = req.params.difficulty
-            const exercise = await exerciseEntity.getValues({difficulty});
-            res.status(200).json(exercise);
+            const result = await exerciseEntity.getValues({difficulty});
+            res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({result}));
         }catch(err){
             errorHandler(err, res);
         }
