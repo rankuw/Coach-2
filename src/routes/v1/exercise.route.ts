@@ -204,7 +204,7 @@ exerciseRoute.patch("/exercise/finish/multiple",
 
 /**
  * @swagger
- * /api/user/v1/exercise/query/{title}:
+ * /api/user/v1/exercise/query/{exercise}:
  *   get:
  *      summary: Query a exercise by title.
  *      tags: [Exercise]
@@ -212,7 +212,7 @@ exerciseRoute.patch("/exercise/finish/multiple",
  *        - in: path
  *          name: exercise
  *          type: string
- *          description: The id of exercise to remove.        
+ *          description: The title of exercise to search.        
  *           
  *      responses:
  *        201:

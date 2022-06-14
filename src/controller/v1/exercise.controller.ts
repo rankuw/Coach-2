@@ -105,7 +105,6 @@ export default class ExerciseController{
 
     static async queryExercises(req: Request, res: Response){
         const title = <string>req.params.exercise;
-        console.log(req.params);
         try{
             const exercises = await exerciseEntity.query(title);
             res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({exercises}, "Fetch successfull"));
