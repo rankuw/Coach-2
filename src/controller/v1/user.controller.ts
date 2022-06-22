@@ -472,10 +472,12 @@ export default class UserController{
             try{
                 const stats = await userWokoutEntity.getCompletedStats(_id);
                 if(stats.length === 0){
-                    throw STATUS_MSG.ERROR.ACTION_NOT_ALLOWED;
+                    res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({}));
+                }else{
+                    delete stats._id;
+                    res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({stats}));
                 }
-                delete stats._id;
-                res.status(200).json(STATUS_MSG.SUCCESS.FETCH_SUCCESS({stats}));
+                
             }catch(err){
                 logger.error(err);
                 errorHandler(err, res);
